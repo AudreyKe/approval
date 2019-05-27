@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weshareholdings.approval.repository.WfTaskResultMapper">
+    <resultMap id="BaseResultMap" type="com.weshareholdings.approval.po.WfTaskResult">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="orderId" jdbcType="VARCHAR" property="orderid"/>
+        <result column="taskId" jdbcType="VARCHAR" property="taskid"/>
+        <result column="result" jdbcType="VARCHAR" property="result"/>
+        <result column="resultState" jdbcType="VARCHAR" property="resultstate"/>
+        <result column="resultType" jdbcType="VARCHAR" property="resulttype"/>
+        <result column="operator" jdbcType="VARCHAR" property="operator"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="display_Name" jdbcType="TIMESTAMP" property="displayName"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, orderId, taskId, `result`, resultState, resultType, `operator`, createTime
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wf_task_result
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from wf_task_result
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.weshareholdings.approval.po.WfTaskResult">
+        insert into wf_task_result (id, orderId, taskId,
+        `result`, resultState, resultType,
+        `operator`, createTime)
+        values (#{id,jdbcType=VARCHAR}, #{orderid,jdbcType=VARCHAR}, #{taskid,jdbcType=VARCHAR},
+        #{result,jdbcType=VARCHAR}, #{resultstate,jdbcType=VARCHAR}, #{resulttype,jdbcType=VARCHAR},
+        #{operator,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.weshareholdings.approval.po.WfTaskResult">
+        insert into wf_task_result
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="orderid != null">
+                orderId,
+            </if>
+            <if test="taskid != null">
+                taskId,
+            </if>
+            <if test="result != null">
+                `result`,
+            </if>
+            <if test="resultstate != null">
+                resultState,
+            </if>
+            <if test="resulttype != null">
+                resultType,
+            </if>
+            <if test="operator != null">
+                `operator`,
+            </if>
+            <if test="createtime != null">
+                createTime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="orderid != null">
+                #{orderid,jdbcType=VARCHAR},
+            </if>
+            <if test="taskid != null">
+                #{taskid,jdbcType=VARCHAR},
+            </if>
+            <if test="result != null">
+                #{result,jdbcType=VARCHAR},
+            </if>
+            <if test="resultstate != null">
+                #{resultstate,jdbcType=VARCHAR},
+            </if>
+            <if test="resulttype != null">
+                #{resulttype,jdbcType=VARCHAR},
+            </if>
+            <if test="operator != null">
+                #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.weshareholdings.approval.po.WfTaskResult">
+        update wf_task_result
+        <set>
+            <if test="orderid != null">
+                orderId = #{orderid,jdbcType=VARCHAR},
+            </if>
+            <if test="taskid != null">
+                taskId = #{taskid,jdbcType=VARCHAR},
+            </if>
+            <if test="result != null">
+                `result` = #{result,jdbcType=VARCHAR},
+            </if>
+            <if test="resultstate != null">
+                resultState = #{resultstate,jdbcType=VARCHAR},
+            </if>
+            <if test="resulttype != null">
+                resultType = #{resulttype,jdbcType=VARCHAR},
+            </if>
+            <if test="operator != null">
+                `operator` = #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                createTime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.weshareholdings.approval.po.WfTaskResult">
+        update wf_task_result
+        set orderId = #{orderid,jdbcType=VARCHAR},
+        taskId = #{taskid,jdbcType=VARCHAR},
+        `result` = #{result,jdbcType=VARCHAR},
+        resultState = #{resultstate,jdbcType=VARCHAR},
+        resultType = #{resulttype,jdbcType=VARCHAR},
+        `operator` = #{operator,jdbcType=VARCHAR},
+        createTime = #{createtime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <select id="selectByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+          b.display_Name
+          ,a.*
+        from
+          wf_task_result a
+        left join wf_hist_task b on a.taskId = b.id
+        where a.orderId = #{orderId}
+        order by createTime ASC
+    </select>
+    <select id="selectResults" parameterType="com.weshareholdings.approval.po.WfTaskResult" resultMap="BaseResultMap">
+        select * from wf_task_result
+        where 1=1
+        <if test="orderid != null">
+            and orderId = #{orderid}
+        </if>
+        <if test="resultstate != null">
+            and resultState = #{resultstate}
+        </if>
+        <if test="resulttype != null">
+            and resultType = #{resulttype}
+        </if>
+    </select>
+</mapper>

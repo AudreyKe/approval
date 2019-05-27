@@ -1,0 +1,78 @@
+#开启日志
+debug: true
+#显示执行SQL语句
+logging:
+  level:
+     com.weshareholdings.approval.repository : debug
+
+spring:
+ redis:
+    host: 10.83.16.4
+    password: Xfx2018@)!*
+    port: 6379
+    #password:
+    maxWaitMillis: 20000
+    jedis:
+      pool:
+        max-active: 1000
+        #最大空闲连接
+        max-idle: 10
+        #最小空闲连接
+        min-idle: 1
+        #连接池最大等待时间，超过等待时间则报错
+        max-wait: 120s
+#配置druid数据源
+datasource:
+  druid:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://10.83.16.9:3306/approval?autoReconnect=true&autoReconnectForPools=true&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: Xfx2018@)!*
+    #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 18000
+    #获取连接最大等待时间
+    maxWait: 1800
+    #连接池最小空闲
+    minIdle: 5
+    #连接池最大数量
+    maxActive: 100
+    #初始化连接大小
+    initial-size: 5
+props:
+  uploadFilePathProp: /usr/local/approval/attach/
+  projectProcessId: 111111
+  reviewProcessId: 222222
+  vetoProcessId: 333333
+  goldProcessId: 444444
+  sessionTimeOut: 7200000
+  url: ldap://10.83.0.20:389/
+  baseDN: OU=Users,DC=wesharesit,DC=com
+  factory: com.sun.jndi.ldap.LdapCtxFactory
+  root: CN=ldapreader,OU=Admins,DC=wesharesit,DC=com
+  password: "Ws2018!07@"
+  compliApprovalUser: test01
+  riskApprovalUser: test03
+  techApprovalUser: test02
+  vetoUser: test06
+stmp:
+  host: 10.83.0.44
+  account: approval-sit@weshareholdings.com.cn
+  password: Ws2018!08@
+  subject: 审批提醒
+mail:
+  smtp:
+    auth: true
+    timeout: 25000
+cas:
+  #服务端参数
+  serverUrlPrefix: http://cas.sit.weshareholdings.com/cas
+  serverLoginUrl: http://cas.sit.weshareholdings.com/cas/login
+  serverLogoutUrl: http://cas.sit.weshareholdings.com/cas/logout
+
+#企业微信登录验证参数
+wechat:
+  appId: ww050711af216fbb0c
+  corpsecret: muI3U-6yds6CuxgVFLqmZ4AUMbJ-L16JUaHobIXfqNs
+  agentId: 1000003
+
+

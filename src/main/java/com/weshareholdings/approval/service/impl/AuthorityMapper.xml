@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weshare.authority.mapper.AuthorityMapper">
+
+  <resultMap id="BaseResultMap" type="com.weshare.authority.entity.MenuAction">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="ico" jdbcType="VARCHAR" property="ico" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="sort" jdbcType="VARCHAR" property="sort" />
+    <result column="perm_id" jdbcType="VARCHAR" property="permId" />
+    <result column="valid" jdbcType="VARCHAR" property="valid" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="fid" jdbcType="VARCHAR" property="fid" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    t5.id, t5.code, t5.name, t5.ico, t5.remark, t5.sort, t5.perm_id, t5.valid, t5.url, t5.fid, t5.type, t5.create_time, t5.update_time
+  </sql>
+
+  <select id="getAllMenuByUserId" parameterType="int" resultMap="BaseResultMap">
+    SELECT
+      <include refid="Base_Column_List"/>
+    FROM
+       ws_sys_user_role t2
+    INNER JOIN ws_sys_auth t3 ON t2.role_id = t3.role_id
+    INNER JOIN ws_sys_permission t4 ON t3.permission_id = t4.id
+    INNER JOIN ws_sys_menu_action t5 ON t4.id = t5.perm_id
+    where
+      t5.type = 1
+    and t2.user_id = #{_parameter,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getAllActionByUserId" parameterType="int" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    ws_sys_user_role t2
+    INNER JOIN ws_sys_auth t3 ON t2.role_id = t3.role_id
+    INNER JOIN ws_sys_permission t4 ON t3.permission_id = t4.id
+    INNER JOIN ws_sys_menu_action t5 ON t4.id = t5.perm_id
+    where
+    t5.type = 2
+    and t2.user_id = #{_parameter,jdbcType=VARCHAR}
+  </select>
+</mapper>

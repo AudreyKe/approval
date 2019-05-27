@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weshareholdings.approval.repository.VoteMeetMapper">
+
+    <resultMap id="proMap" type="com.weshareholdings.approval.vo.VoteProInfo">
+        <result property="id" column="id" jdbcType="VARCHAR"></result>
+        <result property="proName" column="pro_name" jdbcType="VARCHAR"></result>
+        <result property="proType" column="pro_type" jdbcType="VARCHAR"></result>
+        <result property="orderId" column="order_id" jdbcType="VARCHAR"></result>
+        <result property="updateTime" column="update_time" jdbcType="VARCHAR"></result>
+        <result property="createTime" column="create_time" jdbcType="VARCHAR"></result>
+        <result property="orderState" column="order_State" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+
+    <select id="queryVoteMeetList" resultMap="proMap" parameterType="java.lang.String">
+        select distinct
+            t.id
+            ,t.pro_name
+            ,t.pro_type
+            ,DATE_FORMAT(t.update_time,'%Y-%m-%d %H:%i:%s') update_time
+            ,DATE_FORMAT(t.create_time,'%Y-%m-%d %H:%i:%s') create_time
+            ,t.order_id
+            ,if(c.order_State=0,'已通过',if(c.order_State=1,'审批中','已终止')) order_State
+        from
+          pro_info t
+        left join pro_team b on t.id = b.pro_id
+        left join wf_hist_order c on t.order_id = c.id
+        <where>
+            (t.pro_type = #{voteProType}
+            or (c.order_State=0
+            and t.pro_type = #{projectProType}))
+            <if test="operator != null and !&quot;&quot;.equals(operator.trim())">
+                and b.user_id = #{operator}
+            </if>
+            <if test="proName != null and !&quot;&quot;.equals(proName.trim())">
+                and t.pro_name like concat('%',#{proName},'%')
+            </if>
+            <if test="proType != null and !&quot;&quot;.equals(proType.trim())">
+                and t.pro_type = #{proType}
+            </if>
+        </where>
+        order by t.create_Time desc
+    </select>
+
+
+    <resultMap id="proVoMap" type="com.weshareholdings.approval.vo.VoteProInfoVo">
+        <result property="id" column="id" jdbcType="VARCHAR"></result>
+        <result property="proName" column="pro_name" jdbcType="VARCHAR"></result>
+        <result property="assetSerAgency" column="asset_ser_agency" jdbcType="VARCHAR"></result>
+        <result property="inferiorInvestor" column="inferior_investor" jdbcType="VARCHAR"></result>
+        <result property="diffAgency" column="diff_agency" jdbcType="VARCHAR"></result>
+        <result property="coopScale" column="coop_scale" jdbcType="VARCHAR"></result>
+        <result property="coopState" column="coop_state" jdbcType="VARCHAR"></result>
+        <result property="cost" column="cost" jdbcType="VARCHAR"></result>
+        <result property="term" column="term" jdbcType="VARCHAR"></result>
+        <result property="channel" column="channel" jdbcType="VARCHAR"></result>
+        <result property="frontIncome" column="front_income" jdbcType="VARCHAR"></result>
+        <result property="afterIncome" column="after_income" jdbcType="VARCHAR"></result>
+        <result property="externalEnhancementAgencies" column="external_enhancement_agencies" jdbcType="VARCHAR"></result>
+        <result property="ratingSituation" column="rating_situation" jdbcType="VARCHAR"></result>
+        <result property="cyclePeriod" column="cycle_period" jdbcType="VARCHAR"></result>
+        <result property="amortizationPeriod" column="amortization_period" jdbcType="VARCHAR"></result>
+        <result property="projectTeamOpinion" column="project_team_opinion" jdbcType="VARCHAR"></result>
+        <result property="proType" column="pro_type" jdbcType="VARCHAR"></result>
+        <result property="systemAbutmentState" column="system_abutment_state" jdbcType="VARCHAR"></result>
+        <result property="scaleCooperation" column="scale_cooperation" jdbcType="VARCHAR"></result>
+        <result property="stockBalance" column="stock_balance" jdbcType="VARCHAR"></result>
+        <result property="whetherWeshareInvest" column="whether_weshare_invest" jdbcType="VARCHAR"></result>
+        <result property="investComment" column="invest_comment" jdbcType="VARCHAR"></result>
+        <result property="investmentTarget" column="investment_target" jdbcType="VARCHAR"></result>
+        <result property="investmentPurpose" column="investment_purpose" jdbcType="VARCHAR"></result>
+        <result property="totalAmount" column="total_amount" jdbcType="VARCHAR"></result>
+        <result property="investmentAmount" column="investment_amount" jdbcType="VARCHAR"></result>
+        <result property="leverage" column="leverage" jdbcType="VARCHAR"></result>
+        <result property="investmentCharacteristics" column="investment_characteristics" jdbcType="VARCHAR"></result>
+        <result property="originalRightsHolder" column="original_rights_holder" jdbcType="VARCHAR"></result>
+        <result property="holderRatingSituation" column="holder_rating_situation" jdbcType="VARCHAR"></result>
+        <result property="exitMode" column="exit_mode" jdbcType="VARCHAR"></result>
+        <result property="requirements" column="requirements" jdbcType="VARCHAR"></result>
+        <result property="packageNum" column="package_num" jdbcType="VARCHAR"></result>
+        <result property="packageScale" column="package_scale" jdbcType="VARCHAR"></result>
+        <result property="date" column="date" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <!-- 根据流程实例id查询项目详情 -->
+    <select id="queryProByOtderId" resultMap="proVoMap" parameterType="java.lang.String">
+        select
+        id
+        ,pro_name
+        ,asset_ser_agency
+        ,inferior_investor
+        ,diff_agency
+        ,coop_scale
+        ,coop_state
+        ,cost
+        ,term
+        ,channel
+        ,front_income
+        ,after_income
+        ,external_enhancement_agencies
+        ,rating_situation
+        ,cycle_period
+        ,amortization_period
+        ,project_team_opinion
+        ,pro_type
+        ,system_abutment_state
+        ,scale_cooperation
+        ,stock_balance
+        ,whether_weshare_invest
+        ,invest_comment
+        ,investment_target
+        ,investment_purpose
+        ,total_amount
+        ,investment_amount
+        ,leverage
+        ,investment_characteristics
+        ,original_rights_holder
+        ,holder_rating_situation
+        ,exit_mode
+        ,requirements
+        ,package_num
+        ,package_scale
+        ,date
+        from pro_info where order_id = #{orderId}
+    </select>
+
+
+    <resultMap id="proInfoTradeStructureMap" type="com.weshareholdings.approval.po.ProInfoTradeStructure">
+        <result property="id" column="id" jdbcType="VARCHAR"></result>
+        <result property="proId" column="pro_id" jdbcType="VARCHAR"></result>
+        <result property="underlyingAssetsType" column="underlying_assets_type" jdbcType="VARCHAR"></result>
+        <result property="underlyingAssetsStandard" column="underlying_assets_standard" jdbcType="VARCHAR"></result>
+        <result property="ratioAmount" column="ratio_amount" jdbcType="VARCHAR"></result>
+        <result property="fundArrangements" column="fund_arrangements" jdbcType="VARCHAR"></result>
+        <result property="termInvestment" column="term_investment" jdbcType="VARCHAR"></result>
+        <result property="rateInvestment" column="rate_investment" jdbcType="VARCHAR"></result>
+        <result property="ratingResult" column="rating_result" jdbcType="VARCHAR"></result>
+        <result property="isOriginalList" column="is_original_list" jdbcType="VARCHAR"></result>
+        <result property="isOriginalBuyback" column="is_original_buyback" jdbcType="VARCHAR"></result>
+        <result property="breachContent" column="breach_content" jdbcType="VARCHAR"></result>
+        <result property="breachCompare" column="breach_compare" jdbcType="VARCHAR"></result>
+        <result property="totalFundAmount" column="total_fund_amount" jdbcType="VARCHAR"></result>
+        <result property="seedFundProportion" column="seed_fund_proportion" jdbcType="VARCHAR"></result>
+        <result property="estimatedManagementFee" column="estimated_management_fee" jdbcType="VARCHAR"></result>
+        <result property="scopeInvestment" column="scope_investment" jdbcType="VARCHAR"></result>
+        <result property="riskArrangement" column="risk_arrangement" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <!-- 根据项目id查询项目交易结构 -->
+    <select id="queryProInfoTradeStructureByProId" resultMap="proInfoTradeStructureMap" parameterType="java.lang.String">
+        select
+        id
+        ,pro_id
+        ,underlying_assets_type
+        ,underlying_assets_standard
+        ,ratio_amount
+        ,fund_arrangements
+        ,term_investment
+        ,rate_investment
+        ,rating_result
+        ,is_original_list
+        ,is_original_buyback
+        ,breach_content
+        ,breach_compare
+        ,total_fund_amount
+        ,seed_fund_proportion
+        ,estimated_management_fee
+        ,scope_investment
+        ,risk_arrangement
+        ,DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') create_time
+        ,DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time
+        from pro_info_trade_structure where pro_id = #{proId}
+    </select>
+</mapper>

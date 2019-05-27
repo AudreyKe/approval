@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weshareholdings.approval.repository.ProOptMapper">
+    <resultMap id="BaseResultMap" type="com.weshareholdings.approval.po.ProOpt">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="pro_id" property="proId" jdbcType="INTEGER"/>
+        <result column="pro_copy_id" property="proCopyId" jdbcType="INTEGER"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="step" property="step" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="createTime" property="createtime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, pro_id, pro_copy_id, content, step, createTime, status
+    </sql>
+
+    <insert id="insert" parameterType="com.weshareholdings.approval.po.ProOpt">
+        insert into pro_opt (id, pro_id, pro_copy_id,
+        content, step, user_id, createTime
+        )
+        values (#{id,jdbcType=INTEGER}, #{proId,jdbcType=INTEGER}, #{proCopyId,jdbcType=INTEGER},
+        #{content,jdbcType=VARCHAR}, #{step,jdbcType=INTEGER},#{userId, jdbcType=INTEGER}, #{createtime,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.weshareholdings.approval.po.ProOpt">
+        insert into pro_opt
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="proId != null">
+                pro_id,
+            </if>
+            <if test="proCopyId != null">
+                pro_copy_id,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="step != null">
+                step,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="createtime != null">
+                createTime,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="proId != null">
+                #{proId,jdbcType=INTEGER},
+            </if>
+            <if test="proCopyId != null">
+                #{proCopyId,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="step != null">
+                #{step,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId, jdbcType=INTEGER},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status, jdbcType=INTEGER}
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.weshareholdings.approval.po.ProOpt">
+        update pro_opt
+        <set>
+            <if test="proId != null">
+                pro_id = #{proId,jdbcType=INTEGER},
+            </if>
+            <if test="proCopyId != null">
+                pro_copy_id = #{proCopyId,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="step != null">
+                step = #{step,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                userId = #{userId, jdbcType=INTEGER},
+            </if>
+            <if test="createtime != null">
+                createTime = #{createtime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.weshareholdings.approval.po.ProOpt">
+        update pro_opt
+        set pro_id = #{proId,jdbcType=INTEGER},
+        pro_copy_id = #{proCopyId,jdbcType=INTEGER},
+        content = #{content,jdbcType=VARCHAR},
+        step = #{step,jdbcType=INTEGER},
+        user_id = #{userId, jdbcType=INTEGER},
+        createTime = #{createtime,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="getStep" parameterType="java.lang.Integer" resultType="java.lang.String">
+        SELECT MAX(step) FROM pro_opt WHERE pro_id = #{proId}
+    </select>
+</mapper>

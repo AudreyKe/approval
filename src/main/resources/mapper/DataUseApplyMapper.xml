@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weshareholdings.approval.repository.DataUseApplyMapper">
+
+    <resultMap id="proMap" type="com.weshareholdings.approval.vo.DataUseApplyProInfo">
+        <result property="id" column="id" jdbcType="VARCHAR"></result>
+        <result property="proType" column="pro_type" jdbcType="VARCHAR"></result>
+        <result property="systemName" column="system_name" jdbcType="VARCHAR"></result>
+        <result property="applyDepartment" column="apply_department" jdbcType="VARCHAR"></result>
+        <result property="suggestCompleteTime" column="suggest_complete_time" jdbcType="VARCHAR"></result>
+        <result property="applyType" column="apply_type" jdbcType="VARCHAR"></result>
+        <result property="applyCategory" column="apply_category" jdbcType="VARCHAR"></result>
+        <result property="optReason" column="opt_reason" jdbcType="VARCHAR"></result>
+        <result property="optContent" column="opt_content" jdbcType="VARCHAR"></result>
+        <result property="feasibilityAnalysis" column="feasibility_analysis" jdbcType="VARCHAR"></result>
+        <result property="acceptanceConclusion" column="acceptance_conclusion" jdbcType="VARCHAR"></result>
+        <result property="createUserId" column="create_user_id" jdbcType="VARCHAR"></result>
+        <result property="createUserName" column="create_user_name" jdbcType="VARCHAR"></result>
+        <result property="createTime" column="create_time" jdbcType="VARCHAR"></result>
+        <result property="orderId" column="order_id" jdbcType="VARCHAR"></result>
+        <result property="suggestCompleteTime" column="suggest_complete_time" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <!-- 查询数据使用申请列表-->
+    <select id="queryDataUseApplyList" resultMap="proMap" parameterType="java.lang.String">
+        select distinct
+            t.id
+            ,t.pro_type
+            ,t.system_name
+            ,t.apply_department
+            ,DATE_FORMAT(t.suggest_complete_time,'%Y-%m-%d') suggest_complete_time
+            ,DATE_FORMAT(t.create_time,'%Y-%m-%d') createTime
+            ,t.apply_type
+            ,t.apply_category
+            ,t.opt_reason
+            ,t.opt_content
+            ,t.feasibility_analysis
+            ,t.acceptance_conclusion
+            ,t.create_user_id
+            ,s.username create_user_name
+            ,t.order_id
+            ,if(c.order_State=0,'已通过',if(c.order_State=1,'审批中','已终止')) order_State
+        from
+          pro_info t
+        left join sec_user s on t.create_user_id = s.id
+        left join wf_hist_order c on t.order_id = c.id
+        <where>
+            t.pro_type = #{proType}
+            <if test="operator != null and !&quot;&quot;.equals(operator.trim())">
+                and s.id = #{operator}
+            </if>
+        </where>
+        order by t.create_Time desc
+    </select>
+
+
+    <!-- 根据流程id查询数据使用申请详情 -->
+    <select id="queryProByOrderId" resultMap="proMap" parameterType="java.lang.String">
+        select
+            t.id
+            ,t.pro_type
+            ,t.system_name
+            ,t.apply_department
+            ,DATE_FORMAT(t.suggest_complete_time,'%Y-%m-%d') suggest_complete_time
+            ,DATE_FORMAT(t.create_time,'%Y-%m-%d') create_time
+            ,t.apply_type
+            ,t.apply_category
+            ,t.opt_reason
+            ,t.opt_content
+            ,t.feasibility_analysis
+            ,t.acceptance_conclusion
+            ,t.create_user_id
+            ,s.username create_user_name
+            ,t.order_id
+            ,if(c.order_State=0,'已通过',if(c.order_State=1,'审批中','已终止')) order_State
+        from pro_info t
+        left join sec_user s on t.create_user_id = s.id
+        left join wf_hist_order c on t.order_id = c.id
+        where t.order_id = #{orderId}
+    </select>
+
+    <!-- 根据流程id查询数据使用申请详情 -->
+    <select id="proDraftDetail" resultMap="proMap" parameterType="java.lang.String">
+        select
+            t.id
+            ,t.pro_type
+            ,t.system_name
+            ,t.apply_department
+            ,DATE_FORMAT(t.suggest_complete_time,'%Y-%m-%d') suggest_complete_time
+            ,DATE_FORMAT(t.create_time,'%Y-%m-%d') create_time
+            ,t.apply_type
+            ,t.apply_category
+            ,t.opt_reason
+            ,t.opt_content
+            ,t.feasibility_analysis
+            ,t.acceptance_conclusion
+            ,t.create_user_id
+            ,s.username create_user_name
+            ,t.order_id
+        from pro_info_draft t
+        left join sec_user s on t.create_user_id = s.id
+        where t.id = #{id}
+    </select>
+
+
+    <!-- 根据数据申请类型查询执行流程类型 -->
+    <select id="queryTypeByApplyCategory" resultType="java.lang.String" parameterType="java.lang.String">
+        select
+            t.value
+        from pro_sys_config t
+        where t.name in (${applyCategorys})
+    </select>
+
+    <!-- 根据执行流程类型查询流程id -->
+    <select id="queryProcessIdByType" resultType="java.lang.String" parameterType="java.lang.String">
+        select
+            t.id
+        from wf_process t
+        where t.type = #{type} limit 1
+    </select>
+
+    <!-- 根据流程id查询任务id和任务名称和申请部门 -->
+    <select id="queryTaskIdByOrderId" resultType="java.util.Map" parameterType="java.lang.String">
+        select
+            t.id,t.display_Name,pro.apply_department applyDepartment,pro.apply_category applyCategory
+        from wf_task t
+        left join pro_info pro on t.order_id = pro.order_id
+        where pro.pro_type = 4 and t.order_Id = #{orderId} limit 1
+    </select>
+
+    <!-- 根据流程id查询任务id和任务名称和申请部门 -->
+    <select id="queryTaskIdByOrderIdNoPro" resultType="java.util.Map" parameterType="java.lang.String">
+        select
+            t.id,t.display_Name
+        from wf_task t
+        where t.order_Id = #{orderId} limit 1
+    </select>
+
+    <!-- 根据任务id查询项目id和任务名称 -->
+    <select id="queryTaskHisIdByOrderId" resultType="java.util.Map" parameterType="java.lang.String">
+        select
+            pro.id,t.display_Name
+        from wf_hist_task t
+        left join pro_info pro on t.order_id = pro.order_id
+        where pro.pro_type = 4 and t.id = #{taskId} limit 1
+    </select>
+
+
+    <!-- 根据申请部门和申请数据类别判断流程中是否有审核冲突人员 -->
+    <select id="queryCountByApplyDepartmentAndApplyCategory" resultType="java.lang.String" parameterType="java.lang.String">
+        select name count from
+        (
+          select
+            *
+          from
+            task_actor_config
+          where
+            org_name = #{applyDepartment}
+          and type_name in (
+            ${applyCategory}
+        )group by name,actor_id) a group by name having count(1)>1 limit 1
+    </select>
+
+    <!-- 根据申请部门和审批任务名称查询任务参与者 -->
+    <select id="queryActorByApplyDepartmentAndDisplayName" resultType="java.lang.String" parameterType="java.lang.String">
+        select
+          distinct b.username
+        from
+          task_actor_config a
+        left join sec_user b on a.actor_id = b.id
+        where
+          org_name = #{applyDepartment}
+        and
+          name = #{displayName}
+        and
+          type_name in (${applyCategory})
+    </select>
+
+    <!-- 根据申请人查询申请人邮箱 -->
+    <select id="queryEmailByUserName" resultType="java.lang.String" parameterType="java.lang.String">
+        select
+          distinct b.email
+        from
+          sec_user b
+        where
+          username in (${usernames})
+    </select>
+
+    <!-- 根据流程id查询项目申请者 -->
+    <select id="queryApplyUserByOrderId" resultType="java.lang.String" parameterType="java.lang.String">
+        select
+           b.username
+        from
+          pro_info a
+        left join sec_user b on a.create_user_id = b.id
+        where
+          a.order_id = #{orderId} limit 1
+    </select>
+
+    <!-- 查询所有应用系统名称 -->
+    <select id="queryAppName" resultType="java.util.Map" parameterType="java.lang.String">
+        SELECT
+            a.`value`,group_concat(a.name) appName,b.name
+        FROM
+            pro_sys_config a
+        LEFT JOIN ws_sys_org b ON a.value = b.code
+        WHERE
+            a.code = 'appName'
+        GROUP BY a.`value`
+    </select>
+
+    <!--根据附件id修改项目验收结论-->
+    <update id="updateProByProId" parameterType="java.util.Map">
+        update pro_info set
+          acceptance_conclusion=#{acceptanceConclusion,jdbcType=VARCHAR}
+        where
+          id = #{proId,jdbcType=VARCHAR}
+    </update>
+
+    <!--根据附件id修改项目历史验收结论-->
+    <update id="updateProCopyByProId" parameterType="java.util.Map">
+        update pro_info_copy set
+          acceptance_conclusion=#{acceptanceConclusion,jdbcType=VARCHAR}
+        where
+          pro_id = #{proId,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 往项目表中记录一条数据 -->
+    <insert id="insertPro" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+        insert into pro_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proType != null">
+                pro_type,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="createUserId != null">
+                create_user_id,
+            </if>
+            <if test="systemName != null">
+                system_name,
+            </if>
+            <if test="applyDepartment != null">
+                apply_department,
+            </if>
+            <if test="suggestCompleteTime != null" >
+                suggest_complete_time,
+            </if>
+            <if test="applyType != null" >
+                apply_type,
+            </if>
+            <if test="applyCategory != null" >
+                apply_category,
+            </if>
+            <if test="optReason != null" >
+                opt_reason,
+            </if>
+            <if test="optContent != null" >
+                opt_content,
+            </if>
+            <if test="feasibilityAnalysis != null" >
+                feasibility_analysis,
+            </if>
+            <if test="acceptanceConclusion != null" >
+                acceptance_conclusion,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proType != null">
+                #{proType,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="systemName != null">
+                #{systemName,jdbcType=VARCHAR},
+            </if>
+            <if test="applyDepartment != null">
+                #{applyDepartment,jdbcType=VARCHAR},
+            </if>
+            <if test="suggestCompleteTime != null" >
+                #{suggestCompleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="applyType != null">
+                #{applyType,jdbcType=VARCHAR},
+            </if>
+            <if test="applyCategory != null">
+                #{applyCategory, jdbcType=VARCHAR},
+            </if>
+            <if test="optReason != null">
+                #{optReason,jdbcType=VARCHAR},
+            </if>
+            <if test="optContent != null">
+                #{optContent,jdbcType=VARCHAR},
+            </if>
+            <if test="feasibilityAnalysis != null" >
+                #{feasibilityAnalysis,jdbcType=TIMESTAMP},
+            </if>
+            <if test="acceptanceConclusion != null" >
+                #{acceptanceConclusion,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <!-- 往项目草稿表中记录一条数据 -->
+    <insert id="insertProDraft" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+        insert into pro_info_draft
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proType != null">
+                pro_type,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="createUserId != null">
+                create_user_id,
+            </if>
+            <if test="systemName != null">
+                system_name,
+            </if>
+            <if test="applyDepartment != null">
+                apply_department,
+            </if>
+            <if test="suggestCompleteTime != null" >
+                suggest_complete_time,
+            </if>
+            <if test="applyType != null" >
+                apply_type,
+            </if>
+            <if test="applyCategory != null" >
+                apply_category,
+            </if>
+            <if test="optReason != null" >
+                opt_reason,
+            </if>
+            <if test="optContent != null" >
+                opt_content,
+            </if>
+            <if test="feasibilityAnalysis != null" >
+                feasibility_analysis,
+            </if>
+            <if test="acceptanceConclusion != null" >
+                acceptance_conclusion,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proType != null">
+                #{proType,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="systemName != null">
+                #{systemName,jdbcType=VARCHAR},
+            </if>
+            <if test="applyDepartment != null">
+                #{applyDepartment,jdbcType=VARCHAR},
+            </if>
+            <if test="suggestCompleteTime != null" >
+                #{suggestCompleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="applyType != null">
+                #{applyType,jdbcType=VARCHAR},
+            </if>
+            <if test="applyCategory != null">
+                #{applyCategory, jdbcType=VARCHAR},
+            </if>
+            <if test="optReason != null">
+                #{optReason,jdbcType=VARCHAR},
+            </if>
+            <if test="optContent != null">
+                #{optContent,jdbcType=VARCHAR},
+            </if>
+            <if test="feasibilityAnalysis != null" >
+                #{feasibilityAnalysis,jdbcType=TIMESTAMP},
+            </if>
+            <if test="acceptanceConclusion != null" >
+                #{acceptanceConclusion,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <!-- 往项目历史表中记录一条数据 -->
+    <insert id="insertProCopy" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+        insert into pro_info_copy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                pro_id,
+            </if>
+            <if test="proType != null">
+                pro_type,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="createUserId != null">
+                create_user_id,
+            </if>
+            <if test="systemName != null">
+                system_name,
+            </if>
+            <if test="applyDepartment != null">
+                apply_department,
+            </if>
+            <if test="suggestCompleteTime != null" >
+                suggest_complete_time,
+            </if>
+            <if test="applyType != null" >
+                apply_type,
+            </if>
+            <if test="applyCategory != null" >
+                apply_category,
+            </if>
+            <if test="optReason != null" >
+                opt_reason,
+            </if>
+            <if test="optContent != null" >
+                opt_content,
+            </if>
+            <if test="feasibilityAnalysis != null" >
+                feasibility_analysis,
+            </if>
+            <if test="acceptanceConclusion != null" >
+                acceptance_conclusion,
+            </if>
+            <if test="optType != null" >
+                opt_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                #{proId,jdbcType=VARCHAR},
+            </if>
+            <if test="proType != null">
+                #{proType,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="systemName != null">
+                #{systemName,jdbcType=VARCHAR},
+            </if>
+            <if test="applyDepartment != null">
+                #{applyDepartment,jdbcType=VARCHAR},
+            </if>
+            <if test="suggestCompleteTime != null" >
+                #{suggestCompleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="applyType != null">
+                #{applyType,jdbcType=VARCHAR},
+            </if>
+            <if test="applyCategory != null">
+                #{applyCategory, jdbcType=VARCHAR},
+            </if>
+            <if test="optReason != null">
+                #{optReason,jdbcType=VARCHAR},
+            </if>
+            <if test="optContent != null">
+                #{optContent,jdbcType=VARCHAR},
+            </if>
+            <if test="feasibilityAnalysis != null" >
+                #{feasibilityAnalysis,jdbcType=TIMESTAMP},
+            </if>
+            <if test="acceptanceConclusion != null" >
+                #{acceptanceConclusion,jdbcType=TIMESTAMP},
+            </if>
+            <if test="optType != null" >
+                #{optType,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+
+    <update id="updateProDraftByProId" parameterType="java.util.Map" >
+        update pro_info_draft
+        <set >
+            <if test="systemName != null" >
+                system_name = #{systemName,jdbcType=INTEGER},
+            </if>
+            <if test="applyDepartment != null" >
+                apply_department = #{applyDepartment,jdbcType=VARCHAR},
+            </if>
+            <if test="suggestCompleteTime != null" >
+                suggest_complete_time = #{suggestCompleteTime,jdbcType=VARCHAR},
+            </if>
+            <if test="applyType != null" >
+                apply_type = #{applyType,jdbcType=VARCHAR},
+            </if>
+            <if test="applyCategory != null" >
+                apply_category = #{applyCategory,jdbcType=VARCHAR},
+            </if>
+            <if test="optReason != null" >
+                opt_reason = #{optReason,jdbcType=VARCHAR},
+            </if>
+            <if test="optContent != null" >
+                opt_content = #{optContent,jdbcType=VARCHAR},
+            </if>
+            <if test="feasibilityAnalysis != null" >
+                feasibility_analysis = #{feasibilityAnalysis,jdbcType=VARCHAR},
+            </if>
+            <if test="acceptanceConclusion != null" >
+                acceptance_conclusion = #{acceptanceConclusion,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!-- 根据流程id查询流程详情 -->
+    <select id="queryProcessDetailByOrderId" resultType="java.util.Map" parameterType="java.lang.String">
+        select
+            c.value,d.apply_department,d.apply_category
+        from
+            wf_order a
+        left join wf_process b on a.process_Id = b.id
+        left join pro_sys_config c on b.name = c.code
+        left join pro_info d on a.id = d.order_id
+        where a.id = #{orderId}
+        union all
+        select
+            c.value,d.apply_department,d.apply_category
+        from
+            wf_hist_order a
+         left join wf_process b on a.process_Id = b.id
+         left join pro_sys_config c on b.name = c.code
+         left join pro_info d on a.id = d.order_id
+        where a.id = #{orderId} limit 1
+    </select>
+
+    <!-- 根据流程id查询当前节点详情 -->
+    <select id="queryNowNodeByOrderId" resultType="java.util.Map" parameterType="java.lang.String">
+        select
+            d.apply_department,d.apply_category,e.display_Name
+        from
+            wf_order a
+        left join wf_process b on a.process_Id = b.id
+        left join pro_info d on a.id = d.order_id
+        left join wf_task e on e.order_Id = a.id
+        where a.id = #{orderId}
+    </select>
+
+    <!-- 根据流程id查询申请者 -->
+    <select id="queryApplyName" resultType="java.lang.String" parameterType="java.lang.String">
+        select
+            b.fullname
+        from
+            pro_info a
+        left join sec_user b on a.create_user_id = b.id
+        where a.order_Id = #{orderId}
+    </select>
+
+    <!-- 根据申请部门和审批任务名称查询任务参与者 -->
+    <select id="queryActorNameByApplyDepartmentAndDisplayName" resultType="java.lang.String" parameterType="java.lang.String">
+        select
+            distinct b.fullname
+        from
+            task_actor_config a
+            left join sec_user b on a.actor_id = b.id
+        where
+            org_name = #{applyDepartment}
+            and
+            name = #{displayName}
+            and
+            type_name in (${applyCategory})
+    </select>
+
+    <!-- 根据任务名称和流程id查询任务参与者 -->
+    <select id="queryActorNameNoCofig" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT
+            c.fullname
+        FROM
+            wf_task a
+            LEFT JOIN wf_task_actor b on a.id = b.task_Id
+            LEFT JOIN sec_user c on b.actor_Id = c.username
+        WHERE
+            order_Id = #{orderId}
+            AND
+            display_Name = #{displayName}
+        UNION ALL
+        SELECT
+            c.fullname
+        FROM
+            wf_hist_task a
+            LEFT JOIN wf_hist_task_actor b on a.id = b.task_Id
+            LEFT JOIN sec_user c on b.actor_Id = c.username
+        WHERE
+            order_Id = #{orderId}
+            AND
+            display_Name = #{displayName}
+    </select>
+
+</mapper>

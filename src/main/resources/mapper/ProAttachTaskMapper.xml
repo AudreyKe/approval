@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weshareholdings.approval.repository.ProAttachTaskMapper" >
+  <resultMap id="BaseResultMap" type="com.weshareholdings.approval.po.ProAttachTask" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pro_id" property="proId" jdbcType="INTEGER" />
+    <result column="attach_id" property="attachId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="opt_type" property="optType" jdbcType="INTEGER" />
+    <result column="back_reason" property="backReason" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="FileApprovalVoMap" type="com.weshareholdings.approval.vo.FileApprovalVo">
+    <result property="proId" column="id"/>
+    <result property="proName" column="pro_name"/>
+    <result property="proType" column="pro_type"/>
+    <result property="createTime" column="create_Time"/>
+    <result property="orderState" column="order_State"/>
+    <result property="attachTaskState" column="status"/>
+    <result property="orderId" column="order_id"/>
+  </resultMap>
+  <resultMap id="AttachVoMap" type="com.weshareholdings.approval.vo.AttachVo">
+    <result property="id" column="id"/>
+    <result property="proId" column="pro_id"/>
+    <result property="fileName" column="file_name"/>
+    <result property="filePath" column="file_path"/>
+    <result property="realFileName" column="real_file_name"/>
+    <result property="uploadPersonName" column="upload_person_name"/>
+    <result property="uploadPersonId" column="upload_person_Id"/>
+    <result property="proAttachType" column="pro_attach_type"/>
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    <result property="status" column="status"/>
+    <result column="attachTaskState" property="attachTaskState" jdbcType="VARCHAR" />
+    <result column="opt_type" property="optType" jdbcType="INTEGER" />
+    <result column="back_reason" property="backReason" jdbcType="VARCHAR" />
+    <result column="attachTaskId" property="attachTaskId" jdbcType="INTEGER"/>
+      <result column="flag" property="flag" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pro_id, attach_id, user_id, `status`, opt_type, back_reason, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from pro_attach_task
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from pro_attach_task
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.weshareholdings.approval.po.ProAttachTask" >
+    insert into pro_attach_task (id, pro_id, attach_id, 
+      user_id, `status`, opt_type, 
+      back_reason, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{proId,jdbcType=INTEGER}, #{attachId,jdbcType=INTEGER}, 
+      #{userId,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{optType,jdbcType=INTEGER}, 
+      #{backReason,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.weshareholdings.approval.po.ProAttachTask" >
+    insert into pro_attach_task
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="proId != null" >
+        pro_id,
+      </if>
+      <if test="attachId != null" >
+        attach_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="status != null" >
+        `status`,
+      </if>
+      <if test="optType != null" >
+        opt_type,
+      </if>
+      <if test="backReason != null" >
+        back_reason,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="proId != null" >
+        #{proId,jdbcType=INTEGER},
+      </if>
+      <if test="attachId != null" >
+        #{attachId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="optType != null" >
+        #{optType,jdbcType=INTEGER},
+      </if>
+      <if test="backReason != null" >
+        #{backReason,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.weshareholdings.approval.po.ProAttachTask" >
+    update pro_attach_task
+    <set >
+      <if test="proId != null" >
+        pro_id = #{proId,jdbcType=INTEGER},
+      </if>
+      <if test="attachId != null" >
+        attach_id = #{attachId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="optType != null" >
+        opt_type = #{optType,jdbcType=INTEGER},
+      </if>
+      <if test="backReason != null" >
+        back_reason = #{backReason,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.weshareholdings.approval.po.ProAttachTask" >
+    update pro_attach_task
+    set pro_id = #{proId,jdbcType=INTEGER},
+      attach_id = #{attachId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=VARCHAR},
+      opt_type = #{optType,jdbcType=INTEGER},
+      back_reason = #{backReason,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--<select id="selectProsForFileApproval" parameterType="java.lang.String" resultMap="FileApprovalVoMap">
+    SELECT
+        pinfo.id,
+        pro_name,
+        pro_type,
+        wo.create_Time,
+        wo.order_State,
+        c.status,
+        pinfo.order_id
+    FROM
+        pro_info pinfo
+    LEFT JOIN wf_hist_order wo ON wo.id = pinfo.order_id
+    LEFT JOIN (
+        SELECT
+            CASE countNum
+        WHEN 0 THEN
+            '已审核'
+        ELSE
+            '未审核'
+        END AS STATUS,
+        b.pro_id
+    FROM
+        (
+            SELECT
+                COUNT(*) AS countNum,
+                pro_id
+            FROM
+                pro_attach_task pat
+            WHERE
+                pat. STATUS = '00'
+            GROUP BY
+                pat.pro_id
+        ) b
+    ) c ON c.pro_id = pinfo.id
+    WHERE
+      /*status IS NOT NULL*/
+    1=1
+      <if test="proName !=null and !&quot;&quot;.equals(proName.trim())">
+        AND pinfo.pro_name LIKE concat('%',#{proName},'%')
+      </if>
+      <if test="proTypes !=null and proTypes.length > 0">
+        AND pinfo.pro_type IN
+        <foreach collection="proTypes" index="index" item="item" open="(" separator=","
+                 close=")">
+          #{item}
+        </foreach>
+      </if>
+  </select>-->
+  
+  <select id="selectFileWithTask" parameterType="java.lang.String" resultMap="AttachVoMap">
+    SELECT pa.id,pa.pro_id,pa.real_file_name,pa.file_name,pa.file_path,pa.pro_attach_type,pa.status,pa.upload_person_name,pa.upload_person_Id,
+    DATE_FORMAT(pa.create_time,'%Y-%m-%d %H:%i:%s') as create_time,DATE_FORMAT(pa.update_time,'%Y-%m-%d %H:%i:%s') as update_time,
+    pat.status as attachTaskState, pat.opt_type, pat.back_reason, pat.id as attachTaskId, pat.status as flag
+    FROM pro_attach_task  pat
+    LEFT JOIN pro_attach  pa  ON pa.id = pat.attach_id
+      WHERE 1=1
+        <if test="proId != null and !&quot;&quot;.equals(proId.trim())">
+          AND pa.pro_id = #{proId}
+        </if>
+  </select>
+  <select id="selectAttachTask" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT * FROM pro_attach_task
+    WHERE 1=1
+    <if test="proId != null and !&quot;&quot;.equals(proId.trim())">
+      AND pro_id = #{proId}
+    </if>
+    <if test="attachId != null and !&quot;&quot;.equals(attachId.trim())">
+      AND attach_id = #{attachId}
+    </if>
+    <if test="status != null and !&quot;&quot;.equals(status.trim())">
+      AND status = #{status}
+    </if>
+  </select>
+
+  <select id="selectProsForFileApproval" resultMap="FileApprovalVoMap">
+    select b.id,
+    b.pro_name,
+    b.pro_type,
+    b.create_Time,
+    b.order_State,
+    b.order_id,
+    b.status
+    from (
+      SELECT
+      pinfo.id,
+      pro_name,
+      pro_type,
+      wo.create_Time,
+      wo.order_State,
+      pinfo.order_id,
+    IF((
+    SELECT
+    `status`
+    FROM
+    pro_attach_task pat
+    WHERE
+    pat.pro_id = pinfo.id
+    AND `status`='00' LIMIT 1
+    )='00','未审核',IF(IFNULL(
+    (
+    SELECT
+    `status`
+    FROM
+    pro_attach_task pat
+    WHERE
+    pat.pro_id = pinfo.id
+    LIMIT 1
+    ),''
+    ) in ('01','02'),'已审核','')) status
+      FROM
+      pro_info pinfo
+      LEFT JOIN wf_hist_order wo ON wo.id = pinfo.order_id
+      WHERE
+      1=1
+      <if test="proName !=null and !&quot;&quot;.equals(proName.trim())">
+        AND pinfo.pro_name LIKE concat('%',#{proName},'%')
+      </if>
+      <if test="baseProTypes != null and baseProTypes.size()>0">
+        AND pinfo.pro_type IN
+        <foreach collection="baseProTypes" index="index" item="item" open="(" separator=","
+                 close=")">
+          #{item}
+        </foreach>
+      </if> ) b
+    where 1=1
+    <if test="proType != null and !&quot;&quot;.equals(proType.trim())">
+      and b.pro_type = #{proType}
+    </if>
+    and not exists (select 1 from pro_info c where c.id = b.id and c.pro_type = 4)
+    order by b.create_Time desc
+  </select>
+
+  <select id="selectProsForFileApprovalByUser" resultMap="FileApprovalVoMap">
+    select b.id,
+    b.pro_name,
+    b.pro_type,
+    b.create_Time,
+    b.order_State,
+    b.order_id,
+    b.status
+    from (
+    SELECT distinct
+    pinfo.id,
+    pro_name,
+    pro_type,
+    wo.create_Time,
+    wo.order_State,
+    pinfo.order_id,
+    IF((
+    SELECT
+    `status`
+    FROM
+    pro_attach_task pat
+    WHERE
+    pat.pro_id = pinfo.id
+    AND `status`='00' LIMIT 1
+    )='00','未审核',IF(IFNULL(
+    (
+    SELECT
+    `status`
+    FROM
+    pro_attach_task pat
+    WHERE
+    pat.pro_id = pinfo.id
+    LIMIT 1
+    ),''
+    ) in ('01','02'),'已审核','')) status
+    FROM pro_team
+    LEFT JOIN pro_info pinfo ON pinfo.id = pro_team.pro_id
+    LEFT JOIN wf_hist_order wo ON wo.id = pinfo.order_id
+    WHERE
+    1=1
+    <if test="proName !=null and !&quot;&quot;.equals(proName.trim())">
+      AND pinfo.pro_name LIKE concat('%',#{proName},'%')
+    </if>
+    <if test="userId != null and !&quot;&quot;.equals(userId.trim())">
+      and pro_team.user_id = #{userId}
+    </if>
+    <if test="baseProTypes != null and baseProTypes.size()>0">
+      AND pinfo.pro_type IN
+      <foreach collection="baseProTypes" index="index" item="item" open="(" separator=","
+               close=")">
+        #{item}
+      </foreach>
+    </if> ) b
+    where 1=1
+    <if test="proType != null and !&quot;&quot;.equals(proType.trim())">
+      and b.pro_type = #{proType}
+    </if>
+    and not exists (select 1 from pro_info c where c.id = b.id and c.pro_type = 4)
+    order by b.create_Time desc
+  </select>
+</mapper>

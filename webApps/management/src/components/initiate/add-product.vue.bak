@@ -1,0 +1,414 @@
+<style lang="less" scoped>
+@border_color: rgba(204, 204, 204, 0.5);
+.product_layout {
+  padding: 40px;
+  color: #212121;
+  width: 1041px;
+  margin: 0 auto;
+  button {
+    height: 40px;
+    font-size: 14px;
+  }
+}
+.product_name {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 40px;
+  //   input {
+  //     border: 0;
+  //     outline: 0;
+  //     border-bottom: 1px solid #000;
+  //     padding: 0 0 5px 5px;
+  //     width: 70px;
+  //   }
+}
+.product_team {
+  margin-top: 30px;
+  color: #626262;
+  font-size: 16px;
+  line-height: 40px;
+}
+.tab_name {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 23px;
+  margin-top: 25px;
+}
+.product_info {
+  width: 100%;
+  border: 1px solid @border_color;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 14px;
+  tr {
+    border-bottom: 1px solid @border_color;
+    td {
+      height: 50px;
+      text-align: center;
+      border-right: 1px solid #ccc;
+      color: #626262;
+    }
+    .info_key {
+      width: 174px;
+      background: rgba(240, 242, 245, 0.4);
+      padding: 10px 0px;
+    }
+    input {
+      width: 100%;
+      line-height: 50px;
+      border: 0;
+      padding: 0px 7px;
+      &:focus {
+        // border-color: #57a3f3;
+        outline: #57a3f3;
+      }
+    }
+    textarea {
+      width: 100%;
+      height: 95%;
+      border: 0;
+      padding: 5px;
+      &:focus {
+        outline: 0;
+      }
+    }
+  }
+  .ivu-radio-wrapper {
+    margin-right: 50px;
+  }
+}
+.upload_tips {
+  color: red;
+  display: inline-block;
+  margin-left: 20px;
+  position: absolute;
+  top: 11px;
+  left: 80px;
+}
+.file_item {
+  margin-top: 10px;
+  span {
+    margin: 0 10px;
+    vertical-align: middle;
+  }
+  .iconfont {
+    vertical-align: middle;
+    font-size: 22px;
+  }
+  .icon-file_pdf {
+    color: #ff545c;
+  }
+  .icon-shanchu_o {
+    color: #72808c;
+    cursor: pointer;
+    &:hover {
+      color: red;
+    }
+  }
+}
+</style>
+
+<template>
+    <div class="product_layout">
+        <Row class="t-c product_name">
+            <!-- <input type="text"> -->
+            {{baseInfo.proName}}项目简介表
+        </Row>
+        <Row class="product_team">
+            <p class="f-l">
+                项目团队：
+                <Input  style="width:290px;font-size:16px;" v-model="baseInfo.team"></Input>
+            </p>
+            <p class="f-r">
+                日期：<span>{{baseInfo.date}}</span>
+            </p>
+        </Row>
+        <Row class="tab_name">
+            项目基本信息
+        </Row>
+        <Row style="margin-top:15px">
+            <table class="product_info">
+                <tbody>
+                    <tr>
+                        <td class="info_key">项目名称</td>
+                        <td colspan="6">
+                            <input type="text" v-model="baseInfo.proName">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info_key">业务模式</td>
+                        <td colspan="3">
+                            <CheckboxGroup v-model="baseInfo.proModel">
+                                <Checkbox label="存量债转"></Checkbox>
+                                <Checkbox label="新增助贷"></Checkbox>
+                                <Checkbox label="投资业务"></Checkbox>
+                            </CheckboxGroup>
+                        </td>
+                        <td class="info_key">
+                            行业分类
+                        </td>
+                        <td colspan="2">
+                            <input type="text" v-model="baseInfo.category">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info_key">资产服务机构<br>劣后投资人</td>
+                        <td colspan="2">
+                            <input type="text" v-model="baseInfo.assetSerAgency">
+                        </td>
+                        <td class="info_key">
+                            12个月内预计<br>合作规模(亿)
+                        </td>
+                        <td colspan="1">
+                            <input type="text" v-model="baseInfo.coopScale">
+                        </td>
+                        <td class="info_key">
+                            是否同意<br>框架合作及系统对接
+                        </td>
+                        <td colspan="1">
+                            <input type="text" v-model="baseInfo.coopState">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info_key">外部增信机构</td>
+                        <td colspan="3">
+                            <input type="text" v-model="baseInfo.externalEnhancementAgencies">
+                        </td>
+                        <td class="info_key">评级情况</td>
+                        <td colspan="3">
+                            <input type="text" v-model="baseInfo.ratingSituation">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info_key" rowspan="6">分层结构</td>
+                        <td class="info_key">分级</td>
+                        <td class="info_key">发型金额(万元)</td>
+                        <td class="info_key">占比</td>
+                        <td class="info_key">发行利率</td>
+                        <td class="info_key">产品期限(月)</td>
+                        <td class="info_key">加权平均期限(年)</td>
+                    </tr>
+                    <tr v-for="item in layerList">
+                        <td>
+                            <input type="text" v-model="item.level">
+                        </td>
+                        <td>
+                            <input type="text" v-model="item.amount">
+                        </td>
+                        <td>
+                            <input type="text" v-model="item.proportion">
+                        </td>
+                        <td>
+                            <input type="text" v-model="item.issueRate">
+                        </td>
+                        <td>
+                            <input type="text" v-model="item.proTerm">
+                        </td>
+                        <td>
+                            <input type="text" v-model="item.averageTerm">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info_key">发行金额(含次级)<br>亿元</td>
+                        <td colspan="2">
+                            <input type="text" v-model="baseInfo.totalAmount">
+                        </td>
+                        <td class="info_key">
+                            综合成本
+                        </td>
+                        <td colspan="1">
+                            <input type="text" v-model="baseInfo.cost">
+                        </td>
+                        <td class="info_key">
+                            产品期限(年)
+                        </td>
+                        <td colspan="1">
+                            <input type="text" v-model="baseInfo.term">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="7">
+                            静态池/循环结构 - 循环期【<input type="text" style="width:50px;text-align:center" v-model="baseInfo.cyclePeriod">】+ 摊还期【<input type="text" style="width:50px;text-align:center" v-model="baseInfo.amortizationPeriod">】个月
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info_key">分销渠道</td>
+                        <td colspan="6">
+                            <input type="text" v-model="baseInfo.channel">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info_key">项目前端收入</td>
+                        <td colspan="3">
+                            <textarea name="" id="" rows="5" v-model="baseInfo.frontIncome"></textarea>
+                        </td>
+                        <td class="info_key">项目后端收入</td>
+                        <td colspan="2">
+                            <textarea name="" id="" rows="5" v-model="baseInfo.afterIncome"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info_key" >项目团队意见</td>
+                        <td colspan="6" >
+                            <textarea name="" id="" rows="5" placeholder="项目亮点、项目调整、前期与腾讯业务及风控团队交流情况等" v-model="baseInfo.projectTeamOpinion"></textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </Row>
+        <Row class="tab_name">
+            上传附件
+        </Row>
+        <Row style="margin-top:15px">
+            <Upload :before-upload="handleUpload" action="" :format="['pdf']">
+                <Button icon="ios-cloud-upload-outline">上传</Button>
+            </Upload>
+            <span class="upload_tips">*仅支持PDF格式文件</span>
+            <div class="file_item" v-for="(item,index) in baseInfo.fileList">
+                <i class="iconfont icon-file_pdf"></i>
+                <span style>{{item.fileName}}</span>
+                <i class="iconfont icon-shanchu_o" title="删除" @click="removeFile(index)"></i>
+            </div>
+        </Row>
+        <Row style="margin:30px 0 0 0;text-align:right">
+            <Button type="primary" class="margin-right-20" @click="addAudit">提交审核</Button>
+            <Button @click="reset">重置</Button>
+        </Row>
+    </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      baseInfo: {
+        date: new Date().format("yyyy/MM/dd"), //日期
+        team: "", //团队
+        proName: "", //项目名称
+        proModel: [], //业务模式
+        category: "", //行业分类
+        assetSerAgency: "", //资产服务机构
+        coopScale: "", //委托人预计全年合作规模
+        coopState: "", //是否同意框架合作及系统对接
+        totalAmount: "", //发行金额含次级
+        cost: "", //综合成本
+        term: "", //期限
+        channel: "", //分销渠道
+        frontIncome: "", //项目前端收入
+        afterIncome: "", //项目后端收入
+        externalEnhancementAgencies: "", //外部增信机构
+        ratingSituation: "", //评级情况
+        cyclePeriod: "", //循环期
+        amortizationPeriod: "", //摊还期
+        projectTeamOpinion: "", //项目团队意见
+        fileList: []
+      },
+      layerList: [
+        {
+          level: "",
+          amount: "",
+          proportion: "",
+          issueRate: "",
+          proTerm: "",
+          averageTerm: ""
+        },
+        {
+          level: "",
+          amount: "",
+          proportion: "",
+          issueRate: "",
+          proTerm: "",
+          averageTerm: ""
+        },
+        {
+          level: "",
+          amount: "",
+          proportion: "",
+          issueRate: "",
+          proTerm: "",
+          averageTerm: ""
+        },
+        {
+          level: "",
+          amount: "",
+          proportion: "",
+          issueRate: "",
+          proTerm: "",
+          averageTerm: ""
+        },
+        {
+          level: "",
+          amount: "",
+          proportion: "",
+          issueRate: "",
+          proTerm: "",
+          averageTerm: ""
+        }
+      ], //分层结构
+      fileList: [] //文件集合
+    };
+  },
+  methods: {
+    handleUpload(file) {
+      if (file.type != "application/pdf") {
+        this.$Message.error("仅支持上传pdf文件");
+        return false;
+      }
+      loading();
+      let params = new FormData();
+      params.append("file", file);
+      this.api.uploadFile(params).then(data => {
+        loadingHide();
+        if (data.code == "000") {
+          this.baseInfo.fileList.push({ id: data.data.id.toString(),name:data.data.fileName });
+        } else {
+          serviceError(data.message);
+        }
+      });
+      return false;
+    },
+    removeFile(index) {
+      this.baseInfo.fileList.splice(index, 1);
+    },
+    addAudit() {
+      let params = this.getParams();
+      loading();
+      this.api.addProduct(params).then(data => {
+        loadingHide();
+        if(data.code == "000"){
+            window.successNotice("提交成功");
+            this.$router.push('/task/initiate-list');
+        }else{
+            serviceError(data.message);
+        }
+      });
+    },
+    getParams() {
+      let param = JSON.parse(JSON.stringify(this.baseInfo));
+      //   param.fileList = this.fileList.slice(0);
+      param.layerList = [];
+      let arr = this.layerList.slice(0);
+      for (let i in arr) {
+        if (
+          arr[i].level &&
+          arr[i].amount &&
+          arr[i].proportion &&
+          arr[i].issueRate &&
+          arr[i].proTerm &&
+          arr[i].averageTerm
+        ) {
+          param.layerList.push(arr[i]);
+        }
+      }
+      param.proModel = param.proModel.toString();
+      return param;
+    },
+    reset() {}
+  }
+};
+</script>
+
+
+
+
+

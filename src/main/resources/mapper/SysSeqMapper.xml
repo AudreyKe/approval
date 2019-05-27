@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weshareholdings.approval.repository.SysSeqMapper">
+    <resultMap id="BaseResultMap" type="com.weshareholdings.approval.po.SysSeq">
+        <id column="seq_name" property="seqName" jdbcType="VARCHAR"/>
+        <result column="seq_value" property="seqValue" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        seq_name, seq_value
+    </sql>
+
+    <select id="getSeqValue" parameterType="java.lang.String" resultType="java.lang.String">
+        select seq_value from sys_seq where seq_name = #{seqName}
+    </select>
+
+    <update id="updateSeqValue">
+        update sys_seq set seq_value = (seq_value + 1) where seq_name = #{seqName} and seq_value = #{seqValue}
+    </update>
+
+    <insert id="insert" parameterType="com.weshareholdings.approval.po.SysSeq">
+        insert into sys_seq (seq_name, seq_value)
+        values (#{seqName,jdbcType=VARCHAR}, #{seqValue,jdbcType=INTEGER})
+    </insert>
+
+</mapper>

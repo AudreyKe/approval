@@ -1,0 +1,2433 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weshareholdings.approval.repository.ProjectMapper">
+
+    <!--项目Map-->
+    <resultMap id="proMap" type="com.weshareholdings.approval.po.ProInfo">
+        <result property="id" column="id"/>
+        <result property="proName" column="pro_name"/>
+        <result property="proModel" column="pro_model"/>
+        <result property="category" column="category"/>
+        <result property="assetSerAgency" column="asset_ser_agency"/>
+        <result property="inferiorInvestor" column="inferior_investor"  jdbcType="VARCHAR"/>
+        <result property="diffAgency" column="diff_agency"  jdbcType="VARCHAR"/>
+        <result property="coopScale" column="coop_scale"/>
+        <result property="coopState" column="coop_state"/>
+        <result property="totalAmount" column="total_amount"/>
+        <result property="cost" column="cost"/>
+        <result property="term" column="term"/>
+        <result property="channel" column="channel"/>
+        <result property="frontIncome" column="front_income"/>
+        <result property="afterIncome" column="after_income"/>
+        <result property="requirements" column="requirements"/>
+        <result property="date" column="date"/>
+        <result property="team" column="team"/>
+        <result property="orderId" column="order_id"/>
+        <result property="beforeOrderId" column="before_order_id"/>
+        <result property="externalEnhancementAgencies" column="external_enhancement_agencies"/>
+        <result property="ratingSituation" column="rating_situation"/>
+        <result property="cyclePeriod" column="cycle_period"/>
+        <result property="amortizationPeriod" column="amortization_period"/>
+        <result property="projectTeamOpinion" column="project_team_opinion"/>
+        <result property="assertType" column="assert_type"/>
+        <result property="assertSituation" column="assert_situation"/>
+        <result property="originalRightsHolder" column="original_rights_holder"/>
+        <result property="holderRatingSituation" column="holder_rating_situation"/>
+        <result property="packageNum" column="package_num"/>
+        <result property="packageScale" column="package_scale"/>
+        <result property="systemAbutmentState" column="system_abutment_state"/>
+        <result property="scaleCooperation" column="scale_cooperation"/>
+        <result property="stockBalance" column="stock_balance"/>
+        <result property="whetherWeshareInvest" column="whether_weshare_invest"/>
+        <result property="investComment" column="invest_comment"/>
+        <result property="proType" column="pro_type"/>
+    </resultMap>
+
+    <!--项目参数Map-->
+    <parameterMap id="proParamMap" type="com.weshareholdings.approval.po.ProInfo">
+        <!-- <parameter property="proId" resultMap="id"/>-->
+        <parameter property="proName" resultMap="proName"/>
+        <parameter property="proModel" resultMap="proModel"/>
+        <parameter property="category" resultMap="category"/>
+        <parameter property="assetSerAgency" resultMap="assetSerAgency"/>
+        <parameter property="inferiorInvestor" resultMap="inferiorInvestor"/>
+        <parameter property="diffAgency" resultMap="diffAgency"/>
+        <parameter property="coopScale" resultMap="coopScale"/>
+        <parameter property="coopState" resultMap="coopState"/>
+        <parameter property="totalAmount" resultMap="totalAmount"/>
+        <parameter property="cost" resultMap="cost"/>
+        <parameter property="term" resultMap="term"/>
+        <parameter property="channel" resultMap="channel"/>
+        <parameter property="frontIncome" resultMap="frontIncome"/>
+        <parameter property="afterIncome" resultMap="afterIncome"/>
+        <parameter property="requirements" resultMap="requirements"/>
+        <parameter property="date" resultMap="date"/>
+        <parameter property="team" resultMap="team"/>
+        <parameter property="orderId" resultMap="orderId"/>
+        <parameter property="beforeOrderId" resultMap="beforeOrderId"/>
+        <parameter property="externalEnhancementAgencies" resultMap="externalEnhancementAgencies"/>
+        <parameter property="ratingSituation" resultMap="ratingSituation"/>
+        <parameter property="cyclePeriod" resultMap="cyclePeriod"/>
+        <parameter property="amortizationPeriod" resultMap="amortizationPeriod"/>
+        <parameter property="projectTeamOpinion" resultMap="projectTeamOpinion"/>
+        <parameter property="assertType" resultMap="assertType"/>
+        <parameter property="assertSituation" resultMap="assertSituation"/>
+        <parameter property="originalRightsHolder" resultMap="originalRightsHolder"/>
+        <parameter property="holderRatingSituation" resultMap="holderRatingSituation"/>
+        <parameter property="packageNum" resultMap="packageNum"/>
+        <parameter property="packageScale" resultMap="packageScale"/>
+        <parameter property="proType" resultMap="proType"/>
+        <parameter property="otherModeNamel" resultMap="otherModeNamel"/>
+        <parameter property="partners" resultMap="partners"/>
+        <parameter property="proDetails" resultMap="proDetails"/>
+        <parameter property="proCost" resultMap="proCost"/>
+        <parameter property="proExpectation" resultMap="proExpectation"/>
+        <parameter property="proStarTime" resultMap="proStarTime"/>
+        <parameter property="proCompleteTime" resultMap="proCompleteTime"/>
+        <parameter property="proTotal" resultMap="proTotal"/>
+        <parameter property="investmentAmount" resultMap="investmentAmount"/>
+        <parameter property="layerStruct" resultMap="layerStruct"/>
+        <parameter property="expectTime" resultMap="expectTime"/>
+        <parameter property="expectRate" resultMap="expectRate"/>
+        <parameter property="avgTerm" resultMap="avgTerm"/>
+        <parameter property="largeTerm" resultMap="largeTerm"/>
+        <parameter property="passDefaultRate" resultMap="passDefaultRate"/>
+        <parameter property="historyDataContrast" resultMap="historyDataContrast"/>
+        <parameter property="riskAssessment" resultMap="riskAssessment"/>
+        <parameter property="createUserId" resultMap="createUserId"/>
+        <parameter property="updateTime" resultMap="updateTime"/>
+        <parameter property="systemAbutmentState" resultMap="systemAbutmentState"/>
+        <parameter property="scaleCooperation" resultMap="scaleCooperation"/>
+        <parameter property="stockBalance" resultMap="stockBalance"/>
+        <parameter property="whetherWeshareInvest" resultMap="whetherWeshareInvest"/>
+        <parameter property="investComment" resultMap="investComment"/>
+        <parameter property="investmentTarget" resultMap="investmentTarget"/>
+        <parameter property="investmentPurpose" resultMap="investmentPurpose"/>
+        <parameter property="issueAmount" resultMap="issueAmount"/>
+        <parameter property="leverage" resultMap="leverage"/>
+        <parameter property="investmentCharacteristics" resultMap="investmentCharacteristics"/>
+        <parameter property="exitMode" resultMap="exitMode"/>
+    </parameterMap>
+
+    <!--项目分层Map-->
+    <resultMap id="proLayerMap" type="com.weshareholdings.approval.po.ProLayer">
+        <result property="id" column="id"/>
+        <result property="proId" column="pro_id"/>
+        <result property="level" column="level"/>
+        <result property="amount" column="amount"/>
+        <result property="proportion" column="proportion"/>
+        <result property="issueRate" column="issueRate"/>
+        <result property="proTerm" column="proTerm"/>
+        <result property="averageTerm" column="averageTerm"/>
+    </resultMap>
+
+    <!--项目分层参数Map-->
+    <parameterMap id="proLayerParamMap" type="com.weshareholdings.approval.po.ProLayer">
+        <parameter property="proId" resultMap="proId"/>
+        <parameter property="level" resultMap="level"/>
+        <parameter property="amount" resultMap="amount"/>
+        <parameter property="proportion" resultMap="proportion"/>
+        <parameter property="issueRate" resultMap="issueRate"/>
+        <parameter property="proTerm" resultMap="proTerm"/>
+        <parameter property="averageTerm" resultMap="averageTerm"/>
+    </parameterMap>
+
+    <!--附件Map-->
+    <resultMap id="attactMap" type="com.weshareholdings.approval.po.Attach">
+        <result property="id" column="id"/>
+        <result property="proId" column="pro_id"/>
+        <result property="fileName" column="file_name"/>
+        <result property="filePath" column="file_path"/>
+        <result property="realFileName" column="real_file_name"/>
+        <result property="uploadPersonName" column="upload_person_name"/>
+        <result property="uploadPersonId" column="upload_person_Id"/>
+        <result property="proAttachType" column="pro_attach_type"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <!--附件参数Map-->
+    <parameterMap id="attactParamMap" type="com.weshareholdings.approval.po.Attach">
+        <parameter property="proId" resultMap="proId"/>
+        <parameter property="fileName" resultMap="fileName"/>
+        <parameter property="filePath" resultMap="filePath"/>
+        <parameter property="realFileName" resultMap="realFileName"/>
+        <parameter property="createTime" resultMap="createTime"/>
+        <parameter property="proAttachType" resultMap="proAttachType"/>
+        <parameter property="status" resultMap="status"/>
+        <parameter property="uploadPersonName" resultMap="uploadPersonName"/>
+        <parameter property="uploadPersonId" resultMap="uploadPersonId"/>
+        <parameter property="updateTime" resultMap="updateTime"/>
+    </parameterMap>
+
+    <!--用户Map-->
+    <resultMap id="userMap" type="com.weshareholdings.approval.po.User">
+        <result property="id" column="id"/>
+        <result property="address" column="address"/>
+        <result property="age" column="age"/>
+        <result property="email" column="email"/>
+        <result property="enabled" column="enabled"/>
+        <result property="fullName" column="fullname"/>
+        <result property="sex" column="sex"/>
+        <result property="userName" column="username"/>
+        <result property="org" column="org"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+    <!-- 根据流程实例id查询项目详情 -->
+    <select id="queryProById" resultMap="proMap" parameterType="java.lang.String">
+        select
+        id
+        ,if(pro_type=4,system_name,pro_name) as pro_name
+        ,pro_model
+        ,category
+        ,asset_ser_agency
+        ,inferior_investor
+        ,diff_agency
+        ,coop_scale
+        ,coop_state
+        ,total_amount
+        ,cost
+        ,term
+        ,channel
+        ,front_income
+        ,after_income
+        ,requirements
+        ,date
+        ,team
+        ,order_id
+        ,before_order_id
+        ,external_enhancement_agencies
+        ,rating_situation
+        ,cycle_period
+        ,amortization_period
+        ,project_team_opinion
+        ,assert_type
+        ,assert_situation
+        ,original_rights_holder
+        ,holder_rating_situation
+        ,package_num
+        ,package_scale
+        ,system_abutment_state
+        ,scale_cooperation
+        ,stock_balance
+        ,whether_weshare_invest
+        ,invest_comment
+        ,pro_type
+        from pro_info where order_id = #{id}
+    </select>
+
+    <!-- 根据项目id查询项目分层详情 -->
+    <select id="queryProLayerByProId" resultMap="proLayerMap" parameterType="java.lang.String">
+        select
+        id
+        ,pro_id
+        ,level
+        ,amount
+        ,proportion
+        ,issueRate
+        ,proTerm
+        ,averageTerm
+        from pro_layer where pro_id = #{id}
+    </select>
+
+    <!-- 根据项目id查询项目附件详情 -->
+    <select id="queryAttactByProId" resultMap="attactMap" parameterType="java.lang.String">
+        SELECT
+            pa.id,
+            pa.pro_id,
+            pa.file_name,
+            pa.file_path,
+            pa.real_file_name,
+            pa.pro_attach_type,
+            pa.create_time,
+            pa.update_time,
+            pa.`status`,
+            pa.upload_person_name,
+            pa.upload_person_Id
+        FROM pro_attach_task pat
+        JOIN pro_attach pa ON pa.id = pat.attach_id
+        <where>
+            pat.status = '01'
+            AND pa.status = '00'
+            AND pat.attach_id = pa.id
+            and pat.pro_id = #{proId}
+            <if test="proAttachType != null and !&quot;&quot;.equals(proAttachType.trim())">
+                and pa.pro_attach_type in (${proAttachType})
+            </if>
+        </where>
+        order by create_time asc
+    </select>
+
+    <!-- 根据附件id查询附件信息 -->
+    <select id="queryPathByFileId" resultMap="attactMap" parameterType="java.lang.String">
+        select
+        id
+        ,pro_id
+        ,file_name
+        ,file_path
+        ,real_file_name
+        ,pro_attach_type
+        ,create_time
+        ,update_time
+        ,status
+        ,upload_person_name
+        ,upload_person_Id
+        from pro_attach where id = #{id}
+    </select>
+
+    <!-- 根据用户账号查询用户信息 -->
+    <select id="queryUserByUserName" resultMap="userMap" parameterType="java.lang.String">
+      select
+        a.id
+        ,a.address
+        ,a.age
+        ,a.email
+        ,a.enabled
+        ,a.fullname
+        ,a.username
+        ,if(a.org=null,'4',concat(a.org,',4')) org
+      from
+        (select
+          su.id
+          ,su.address
+          ,su.age
+          ,su.email
+          ,su.enabled
+          ,su.fullname
+          ,su.username
+          ,(
+            select
+              group_concat(if(b.code='ABS','0,1',if(b.code='VOTE','2','3')))
+            from
+              ws_sys_user_org a
+            inner join ws_sys_org b on a.org_id = b.id
+            where
+              a.user_id = su.id
+            group by a.user_id
+          ) as org
+        from
+          sec_user su
+        where
+          su.username = #{userName}
+      )a
+    </select>
+
+
+    <!-- 根据部门查询上会人员 -->
+    <select id="queryMeetPersonByProType" resultMap="userMap" parameterType="java.lang.String">
+        select
+          su.id
+          ,su.address
+          ,su.age
+          ,su.email
+          ,su.enabled
+          ,su.fullname
+          ,su.username
+          ,(
+            select
+              group_concat(if(b.code='ABS','0,1',if(b.code='VOTE','2','3')))
+            from
+              ws_sys_user_org a
+            inner join ws_sys_org b on a.org_id = b.id
+            where
+              a.user_id = su.id
+            group by a.user_id
+          ) as org
+          ,psc.type
+        from
+          sec_user su
+        left join pro_sys_config psc on su.id = psc.value
+        where
+          psc.name = #{department}
+        and
+          psc.code = 'meetPerson'
+    </select>
+
+    <!-- 往项目表中记录一条数据 -->
+    <insert id="insertProInfo" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+        insert into pro_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                order_id ,
+            </if>
+            <if test="beforeOrderId != null">
+                before_order_id ,
+            </if>
+            <if test="date != null">
+                date,
+            </if>
+            <if test="team != null">
+                team,
+            </if>
+            <if test="proName != null">
+                pro_name,
+            </if>
+            <if test="proModel != null">
+                pro_model,
+            </if>
+            <if test="category != null">
+                category,
+            </if>
+            <if test="assetSerAgency != null">
+                asset_ser_agency,
+            </if>
+            <if test="inferiorInvestor != null">
+                inferior_investor,
+            </if>
+            <if test="diffAgency != null">
+                diff_agency,
+            </if>
+            <if test="coopScale != null">
+                coop_scale,
+            </if>
+            <if test="coopState != null">
+                coop_state,
+            </if>
+            <if test="planManagement != null">
+                plan_management,
+            </if>
+            <if test="techSuppport != null">
+                tech_suppport,
+            </if>
+            <if test="promiser != null">
+                promiser,
+            </if>
+            <if test="promiserLevel != null">
+                promiser_level,
+            </if>
+            <if test="guarantee != null">
+                guarantee,
+            </if>
+            <if test="guaranteeLevel != null">
+                guarantee_level,
+            </if>
+            <if test="guaInstitution != null">
+                gua_institution,
+            </if>
+            <if test="guaInstitutionLvel != null">
+                gua_institution_lvel,
+            </if>
+            <if test="totalAmount != null">
+                total_amount,
+            </if>
+            <if test="cost != null">
+                cost,
+            </if>
+            <if test="term != null">
+                term,
+            </if>
+            <if test="channel != null">
+                channel,
+            </if>
+            <if test="frontIncome != null">
+                front_income,
+            </if>
+            <if test="afterIncome != null">
+                after_income,
+            </if>
+            <if test="requirements != null">
+                requirements,
+            </if>
+            <if test="schedule != null">
+                schedule,
+            </if>
+            <if test="requirementsState != null">
+                requirements_state,
+            </if>
+            <if test="cyclePeriod != null">
+                cycle_period,
+            </if>
+            <if test="amortizationPeriod != null">
+                amortization_period,
+            </if>
+            <if test="externalEnhancementAgencies != null">
+                external_enhancement_agencies,
+            </if>
+            <if test="guaInstitutionLvel != null">
+                gua_institution_lvel,
+            </if>
+            <if test="projectTeamOpinion != null">
+                project_team_opinion,
+            </if>
+            <if test="ratingSituation != null">
+                rating_situation,
+            </if>
+            <if test="assertType != null">
+                assert_type,
+            </if>
+            <if test="assertSituation != null">
+                assert_situation,
+            </if>
+            <if test="originalRightsHolder != null">
+                original_rights_holder,
+            </if>
+            <if test="holderRatingSituation != null">
+                holder_rating_situation,
+            </if>
+            <if test="packageNum != null">
+                package_num,
+            </if>
+            <if test="packageScale != null">
+                package_scale,
+            </if>
+            <if test="proType != null">
+                pro_type,
+            </if>
+            <if test="otherModeNamel != null">
+                other_mode_namel,
+            </if>
+            <if test="partners != null">
+                partners,
+            </if>
+            <if test="proDetails != null">
+                pro_details,
+            </if>
+            <if test="proCost != null">
+                pro_cost,
+            </if>
+            <if test="proExpectation != null">
+                pro_expectation,
+            </if>
+            <if test="proStarTime != null">
+                pro_star_time,
+            </if>
+            <if test="proCompleteTime != null">
+                pro_complete_time,
+            </if>
+            <if test="proTotal != null">
+                pro_total,
+            </if>
+            <if test="investmentAmount != null">
+                investment_amount,
+            </if>
+            <if test="layerStruct != null">
+                layer_struct,
+            </if>
+            <if test="expectTime != null">
+                expect_time,
+            </if>
+            <if test="expectRate != null">
+                expect_rate,
+            </if>
+            <if test="avgTerm != null">
+                avg_term,
+            </if>
+            <if test="largeTerm != null">
+                large_term,
+            </if>
+            <if test="passDefaultRate != null">
+                pass_default_rate,
+            </if>
+            <if test="historyDataContrast != null">
+                history_data_contrast,
+            </if>
+            <if test="riskAssessment != null">
+                risk_assessment,
+            </if>
+            <if test="trustPlanTime != null">
+                trust_plan_time,
+            </if>
+            <if test="legalText != null">
+                legal_text,
+            </if>
+            <if test="otherCondition != null">
+                other_condition,
+            </if>
+            <if test="createUserId != null">
+                create_user_id,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="systemAbutmentState != null">
+                system_abutment_state,
+            </if>
+            <if test="scaleCooperation != null">
+                scale_cooperation,
+            </if>
+            <if test="stockBalance != null">
+                stock_balance,
+            </if>
+            <if test="whetherWeshareInvest != null">
+                whether_weshare_invest,
+            </if>
+            <if test="investComment != null">
+                invest_comment,
+            </if>
+            <if test="investmentTarget != null">
+                investment_target,
+            </if>
+            <if test="investmentPurpose != null">
+                investment_purpose,
+            </if>
+            <if test="issueAmount != null">
+                issue_amount,
+            </if>
+            <if test="leverage != null">
+                leverage,
+            </if>
+            <if test="investmentCharacteristics != null">
+                investment_characteristics,
+            </if>
+            <if test="exitMode != null">
+                exit_mode,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="beforeOrderId != null">
+                #{beforeOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null">
+                #{date,jdbcType=VARCHAR},
+            </if>
+            <if test="team != null">
+                #{team,jdbcType=VARCHAR},
+            </if>
+            <if test="proName != null">
+                #{proName,jdbcType=VARCHAR},
+            </if>
+            <if test="proModel != null">
+                #{proModel,jdbcType=VARCHAR},
+            </if>
+            <if test="category != null">
+                #{category,jdbcType=VARCHAR},
+            </if>
+            <if test="assetSerAgency != null">
+                #{assetSerAgency,jdbcType=VARCHAR},
+            </if>
+            <if test="inferiorInvestor != null">
+                #{inferiorInvestor,jdbcType=VARCHAR},
+            </if>
+            <if test="diffAgency != null">
+                #{diffAgency,jdbcType=VARCHAR},
+            </if>
+            <if test="coopScale != null">
+                #{coopScale,jdbcType=VARCHAR},
+            </if>
+            <if test="coopState != null">
+                #{coopState,jdbcType=VARCHAR},
+            </if>
+            <if test="planManagement != null">
+                #{planManagement,jdbcType=VARCHAR},
+            </if>
+            <if test="techSuppport != null">
+                #{techSuppport,jdbcType=VARCHAR},
+            </if>
+            <if test="promiser != null">
+                #{promiser,jdbcType=VARCHAR},
+            </if>
+            <if test="promiserLevel != null">
+                #{promiserLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="guarantee != null">
+                #{guarantee,jdbcType=VARCHAR},
+            </if>
+            <if test="guaranteeLevel != null">
+                #{guaranteeLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="guaInstitution != null">
+                #{guaInstitution,jdbcType=VARCHAR},
+            </if>
+            <if test="guaInstitutionLvel != null">
+                #{guaInstitutionLvel,jdbcType=VARCHAR},
+            </if>
+            <if test="totalAmount != null">
+                #{totalAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="cost != null">
+                #{cost,jdbcType=VARCHAR},
+            </if>
+            <if test="term != null">
+                #{term,jdbcType=VARCHAR},
+            </if>
+            <if test="channel != null">
+                #{channel,jdbcType=VARCHAR},
+            </if>
+            <if test="frontIncome != null">
+                #{frontIncome,jdbcType=VARCHAR},
+            </if>
+            <if test="afterIncome != null">
+                #{afterIncome,jdbcType=VARCHAR},
+            </if>
+            <if test="requirements != null">
+                #{requirements,jdbcType=VARCHAR},
+            </if>
+            <if test="schedule != null">
+                #{schedule,jdbcType=VARCHAR},
+            </if>
+            <if test="requirementsState != null">
+                #{requirementsState,jdbcType=VARCHAR},
+            </if>
+            <if test="cyclePeriod != null">
+                #{cyclePeriod,jdbcType=VARCHAR},
+            </if>
+            <if test="amortizationPeriod != null">
+                #{amortizationPeriod,jdbcType=VARCHAR},
+            </if>
+            <if test="externalEnhancementAgencies != null">
+                #{externalEnhancementAgencies,jdbcType=VARCHAR},
+            </if>
+            <if test="guaInstitutionLvel != null">
+                #{guaInstitutionLvel,jdbcType=VARCHAR},
+            </if>
+            <if test="projectTeamOpinion != null">
+                #{projectTeamOpinion,jdbcType=VARCHAR},
+            </if>
+            <if test="ratingSituation != null">
+                #{ratingSituation,jdbcType=VARCHAR},
+            </if>
+            <if test="assertType != null">
+                #{assertType,jdbcType=VARCHAR},
+            </if>
+            <if test="assertSituation != null">
+                #{assertSituation,jdbcType=VARCHAR},
+            </if>
+            <if test="originalRightsHolder != null">
+                #{originalRightsHolder,jdbcType=VARCHAR},
+            </if>
+            <if test="holderRatingSituation != null">
+                #{holderRatingSituation,jdbcType=VARCHAR},
+            </if>
+            <if test="packageNum != null">
+                #{packageNum,jdbcType=VARCHAR},
+            </if>
+            <if test="packageScale != null">
+                #{packageScale,jdbcType=VARCHAR},
+            </if>
+            <if test="proType != null">
+                #{proType,jdbcType=VARCHAR},
+            </if>
+            <if test="otherModeNamel != null">
+                #{otherModeNamel,jdbcType=VARCHAR},
+            </if>
+            <if test="partners != null">
+                #{partners,jdbcType=VARCHAR},
+            </if>
+            <if test="proDetails != null">
+                #{proDetails,jdbcType=VARCHAR},
+            </if>
+            <if test="proCost != null">
+                #{proCost,jdbcType=VARCHAR},
+            </if>
+            <if test="proExpectation != null">
+                #{proExpectation,jdbcType=VARCHAR},
+            </if>
+            <if test="proStarTime != null">
+                #{proStarTime,jdbcType=VARCHAR},
+            </if>
+            <if test="proCompleteTime != null">
+                #{proCompleteTime,jdbcType=VARCHAR},
+            </if>
+            <if test="proTotal != null">
+                #{proTotal,jdbcType=VARCHAR},
+            </if>
+            <if test="investmentAmount != null">
+                #{investmentAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="layerStruct != null">
+                #{layerStruct,jdbcType=VARCHAR},
+            </if>
+            <if test="expectTime != null">
+                #{expectTime,jdbcType=VARCHAR},
+            </if>
+            <if test="expectRate != null">
+                #{expectRate,jdbcType=VARCHAR},
+            </if>
+            <if test="avgTerm != null">
+                #{avgTerm,jdbcType=VARCHAR},
+            </if>
+            <if test="largeTerm != null">
+                #{largeTerm,jdbcType=VARCHAR},
+            </if>
+            <if test="passDefaultRate != null">
+                #{passDefaultRate,jdbcType=VARCHAR},
+            </if>
+            <if test="historyDataContrast != null">
+                #{historyDataContrast,jdbcType=VARCHAR},
+            </if>
+            <if test="riskAssessment != null">
+                #{riskAssessment,jdbcType=VARCHAR},
+            </if>
+            <if test="trustPlanTime != null">
+                #{trustPlanTime,jdbcType=VARCHAR},
+            </if>
+            <if test="legalText != null">
+                #{legalText,jdbcType=VARCHAR},
+            </if>
+            <if test="otherCondition != null">
+                #{otherCondition,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="systemAbutmentState != null">
+                #{systemAbutmentState,jdbcType=VARCHAR},
+            </if>
+            <if test="scaleCooperation != null">
+                #{scaleCooperation,jdbcType=VARCHAR},
+            </if>
+            <if test="stockBalance != null">
+                #{stockBalance,jdbcType=VARCHAR},
+            </if>
+            <if test="whetherWeshareInvest != null">
+                #{whetherWeshareInvest,jdbcType=VARCHAR},
+            </if>
+            <if test="investComment != null">
+                #{investComment,jdbcType=VARCHAR},
+            </if>
+            <if test="investmentTarget != null">
+                #{investmentTarget,jdbcType=VARCHAR},
+            </if>
+            <if test="investmentPurpose != null">
+                #{investmentPurpose,jdbcType=VARCHAR},
+            </if>
+            <if test="issueAmount != null">
+                #{issueAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="leverage != null">
+                #{leverage,jdbcType=VARCHAR},
+            </if>
+            <if test="investmentCharacteristics != null">
+                #{investmentCharacteristics,jdbcType=VARCHAR},
+            </if>
+            <if test="exitMode != null">
+                #{exitMode,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+
+    <!-- 往项目表中记录一条数据 -->
+    <insert id="insertProInfoPro" parameterMap="proParamMap" useGeneratedKeys="true" keyProperty="id">
+        insert into pro_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                order_id ,
+            </if>
+            <if test="beforeOrderId != null">
+                before_order_id ,
+            </if>
+            <if test="date != null">
+                date,
+            </if>
+            <if test="team != null">
+                team,
+            </if>
+            <if test="proName != null">
+                pro_name,
+            </if>
+            <if test="proModel != null">
+                pro_model,
+            </if>
+            <if test="category != null">
+                category,
+            </if>
+            <if test="assetSerAgency != null">
+                asset_ser_agency,
+            </if>
+            <if test="inferiorInvestor != null">
+                inferior_investor,
+            </if>
+            <if test="diffAgency != null">
+                diff_agency,
+            </if>
+            <if test="coopScale != null">
+                coop_scale,
+            </if>
+            <if test="coopState != null">
+                coop_state,
+            </if>
+            <if test="planManagement != null">
+                plan_management,
+            </if>
+            <if test="techSuppport != null">
+                tech_suppport,
+            </if>
+            <if test="promiser != null">
+                promiser,
+            </if>
+            <if test="promiserLevel != null">
+                promiser_level,
+            </if>
+            <if test="guarantee != null">
+                guarantee,
+            </if>
+            <if test="guaranteeLevel != null">
+                guarantee_level,
+            </if>
+            <if test="guaInstitution != null">
+                gua_institution,
+            </if>
+            <if test="guaInstitutionLvel != null">
+                gua_institution_lvel,
+            </if>
+            <if test="totalAmount != null">
+                total_amount,
+            </if>
+            <if test="cost != null">
+                cost,
+            </if>
+            <if test="term != null">
+                term,
+            </if>
+            <if test="channel != null">
+                channel,
+            </if>
+            <if test="frontIncome != null">
+                front_income,
+            </if>
+            <if test="afterIncome != null">
+                after_income,
+            </if>
+            <if test="requirements != null">
+                requirements,
+            </if>
+            <if test="schedule != null">
+                schedule,
+            </if>
+            <if test="requirementsState != null">
+                requirements_state,
+            </if>
+            <if test="cyclePeriod != null">
+                cycle_period,
+            </if>
+            <if test="amortizationPeriod != null">
+                amortization_period,
+            </if>
+            <if test="externalEnhancementAgencies != null">
+                external_enhancement_agencies,
+            </if>
+            <if test="guaInstitutionLvel != null">
+                gua_institution_lvel,
+            </if>
+            <if test="projectTeamOpinion != null">
+                project_team_opinion,
+            </if>
+            <if test="ratingSituation != null">
+                rating_situation,
+            </if>
+            <if test="assertType != null">
+                assert_type,
+            </if>
+            <if test="assertSituation != null">
+                assert_situation,
+            </if>
+            <if test="originalRightsHolder != null">
+                original_rights_holder,
+            </if>
+            <if test="holderRatingSituation != null">
+                holder_rating_situation,
+            </if>
+            <if test="packageNum != null">
+                package_num,
+            </if>
+            <if test="packageScale != null">
+                package_scale,
+            </if>
+            <if test="proType != null">
+                pro_type,
+            </if>
+            <if test="otherModeNamel != null">
+                other_mode_namel,
+            </if>
+            <if test="partners != null">
+                partners,
+            </if>
+            <if test="proDetails != null">
+                pro_details,
+            </if>
+            <if test="proCost != null">
+                pro_cost,
+            </if>
+            <if test="proExpectation != null">
+                pro_expectation,
+            </if>
+            <if test="proStarTime != null">
+                pro_star_time,
+            </if>
+            <if test="proCompleteTime != null">
+                pro_complete_time,
+            </if>
+            <if test="proTotal != null">
+                pro_total,
+            </if>
+            <if test="investmentAmount != null">
+                investment_amount,
+            </if>
+            <if test="layerStruct != null">
+                layer_struct,
+            </if>
+            <if test="expectTime != null">
+                expect_time,
+            </if>
+            <if test="expectRate != null">
+                expect_rate,
+            </if>
+            <if test="avgTerm != null">
+                avg_term,
+            </if>
+            <if test="largeTerm != null">
+                large_term,
+            </if>
+            <if test="passDefaultRate != null">
+                pass_default_rate,
+            </if>
+            <if test="historyDataContrast != null">
+                history_data_contrast,
+            </if>
+            <if test="riskAssessment != null">
+                risk_assessment,
+            </if>
+            <if test="trustPlanTime != null">
+                trust_plan_time,
+            </if>
+            <if test="legalText != null">
+                legal_text,
+            </if>
+            <if test="otherCondition != null">
+                other_condition,
+            </if>
+            <if test="createUserId != null">
+                create_user_id,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="beforeOrderId != null">
+                before_order_id,
+            </if>
+            <if test="systemAbutmentState != null">
+                system_abutment_state,
+            </if>
+            <if test="scaleCooperation != null">
+                scale_cooperation,
+            </if>
+            <if test="stockBalance != null">
+                stock_balance,
+            </if>
+            <if test="whetherWeshareInvest != null">
+                whether_weshare_invest,
+            </if>
+            <if test="investComment != null">
+                invest_comment,
+            </if>
+            <if test="investmentTarget != null">
+                investment_target,
+            </if>
+            <if test="investmentPurpose != null">
+                investment_purpose,
+            </if>
+            <if test="issueAmount != null">
+                issue_amount,
+            </if>
+            <if test="leverage != null">
+                leverage,
+            </if>
+            <if test="investmentCharacteristics != null">
+                investment_characteristics,
+            </if>
+            <if test="exitMode != null">
+                exit_mode,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="beforeOrderId != null">
+                #{beforeOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null">
+                #{date,jdbcType=VARCHAR},
+            </if>
+            <if test="team != null">
+                #{team,jdbcType=VARCHAR},
+            </if>
+            <if test="proName != null">
+                #{proName,jdbcType=VARCHAR},
+            </if>
+            <if test="proModel != null">
+                #{proModel,jdbcType=VARCHAR},
+            </if>
+            <if test="category != null">
+                #{category,jdbcType=VARCHAR},
+            </if>
+            <if test="assetSerAgency != null">
+                #{assetSerAgency,jdbcType=VARCHAR},
+            </if>
+            <if test="inferiorInvestor != null">
+                #{inferiorInvestor,jdbcType=VARCHAR},
+            </if>
+            <if test="diffAgency != null">
+                #{diffAgency,jdbcType=VARCHAR},
+            </if>
+            <if test="coopScale != null">
+                #{coopScale,jdbcType=VARCHAR},
+            </if>
+            <if test="coopState != null">
+                #{coopState,jdbcType=VARCHAR},
+            </if>
+            <if test="planManagement != null">
+                #{planManagement,jdbcType=VARCHAR},
+            </if>
+            <if test="techSuppport != null">
+                #{techSuppport,jdbcType=VARCHAR},
+            </if>
+            <if test="promiser != null">
+                #{promiser,jdbcType=VARCHAR},
+            </if>
+            <if test="promiserLevel != null">
+                #{promiserLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="guarantee != null">
+                #{guarantee,jdbcType=VARCHAR},
+            </if>
+            <if test="guaranteeLevel != null">
+                #{guaranteeLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="guaInstitution != null">
+                #{guaInstitution,jdbcType=VARCHAR},
+            </if>
+            <if test="guaInstitutionLvel != null">
+                #{guaInstitutionLvel,jdbcType=VARCHAR},
+            </if>
+            <if test="totalAmount != null">
+                #{totalAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="cost != null">
+                #{cost,jdbcType=VARCHAR},
+            </if>
+            <if test="term != null">
+                #{term,jdbcType=VARCHAR},
+            </if>
+            <if test="channel != null">
+                #{channel,jdbcType=VARCHAR},
+            </if>
+            <if test="frontIncome != null">
+                #{frontIncome,jdbcType=VARCHAR},
+            </if>
+            <if test="afterIncome != null">
+                #{afterIncome,jdbcType=VARCHAR},
+            </if>
+            <if test="requirements != null">
+                #{requirements,jdbcType=VARCHAR},
+            </if>
+            <if test="schedule != null">
+                #{schedule,jdbcType=VARCHAR},
+            </if>
+            <if test="requirementsState != null">
+                #{requirementsState,jdbcType=VARCHAR},
+            </if>
+            <if test="cyclePeriod != null">
+                #{cyclePeriod,jdbcType=VARCHAR},
+            </if>
+            <if test="amortizationPeriod != null">
+                #{amortizationPeriod,jdbcType=VARCHAR},
+            </if>
+            <if test="externalEnhancementAgencies != null">
+                #{externalEnhancementAgencies,jdbcType=VARCHAR},
+            </if>
+            <if test="guaInstitutionLvel != null">
+                #{guaInstitutionLvel,jdbcType=VARCHAR},
+            </if>
+            <if test="projectTeamOpinion != null">
+                #{projectTeamOpinion,jdbcType=VARCHAR},
+            </if>
+            <if test="ratingSituation != null">
+                #{ratingSituation,jdbcType=VARCHAR},
+            </if>
+            <if test="assertType != null">
+                #{assertType,jdbcType=VARCHAR},
+            </if>
+            <if test="assertSituation != null">
+                #{assertSituation,jdbcType=VARCHAR},
+            </if>
+            <if test="originalRightsHolder != null">
+                #{originalRightsHolder,jdbcType=VARCHAR},
+            </if>
+            <if test="holderRatingSituation != null">
+                #{holderRatingSituation,jdbcType=VARCHAR},
+            </if>
+            <if test="packageNum != null">
+                #{packageNum,jdbcType=VARCHAR},
+            </if>
+            <if test="packageScale != null">
+                #{packageScale,jdbcType=VARCHAR},
+            </if>
+            <if test="proType != null">
+                #{proType,jdbcType=VARCHAR},
+            </if>
+            <if test="otherModeNamel != null">
+                #{otherModeNamel,jdbcType=VARCHAR},
+            </if>
+            <if test="partners != null">
+                #{partners,jdbcType=VARCHAR},
+            </if>
+            <if test="proDetails != null">
+                #{proDetails,jdbcType=VARCHAR},
+            </if>
+            <if test="proCost != null">
+                #{proCost,jdbcType=VARCHAR},
+            </if>
+            <if test="proExpectation != null">
+                #{proExpectation,jdbcType=VARCHAR},
+            </if>
+            <if test="proStarTime != null">
+                #{proStarTime,jdbcType=VARCHAR},
+            </if>
+            <if test="proCompleteTime != null">
+                #{proCompleteTime,jdbcType=VARCHAR},
+            </if>
+            <if test="proTotal != null">
+                #{proTotal,jdbcType=VARCHAR},
+            </if>
+            <if test="investmentAmount != null">
+                #{investmentAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="layerStruct != null">
+                #{layerStruct,jdbcType=VARCHAR},
+            </if>
+            <if test="expectTime != null">
+                #{expectTime,jdbcType=VARCHAR},
+            </if>
+            <if test="expectRate != null">
+                #{expectRate,jdbcType=VARCHAR},
+            </if>
+            <if test="avgTerm != null">
+                #{avgTerm,jdbcType=VARCHAR},
+            </if>
+            <if test="largeTerm != null">
+                #{largeTerm,jdbcType=VARCHAR},
+            </if>
+            <if test="passDefaultRate != null">
+                #{passDefaultRate,jdbcType=VARCHAR},
+            </if>
+            <if test="historyDataContrast != null">
+                #{historyDataContrast,jdbcType=VARCHAR},
+            </if>
+            <if test="riskAssessment != null">
+                #{riskAssessment,jdbcType=VARCHAR},
+            </if>
+            <if test="trustPlanTime != null">
+                #{trustPlanTime,jdbcType=VARCHAR},
+            </if>
+            <if test="legalText != null">
+                #{legalText,jdbcType=VARCHAR},
+            </if>
+            <if test="otherCondition != null">
+                #{otherCondition,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="beforeOrderId != null">
+                #{beforeOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="systemAbutmentState != null">
+                #{systemAbutmentState,jdbcType=VARCHAR},
+            </if>
+            <if test="scaleCooperation != null">
+                #{scaleCooperation,jdbcType=VARCHAR},
+            </if>
+            <if test="stockBalance != null">
+                #{stockBalance,jdbcType=VARCHAR},
+            </if>
+            <if test="whetherWeshareInvest != null">
+                #{whetherWeshareInvest,jdbcType=VARCHAR},
+            </if>
+            <if test="investComment != null">
+                #{investComment,jdbcType=VARCHAR},
+            </if>
+            <if test="investmentTarget != null">
+                #{investmentTarget,jdbcType=VARCHAR},
+            </if>
+            <if test="investmentPurpose != null">
+                #{investmentPurpose,jdbcType=VARCHAR},
+            </if>
+            <if test="issueAmount != null">
+                #{issueAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="leverage != null">
+                #{leverage,jdbcType=VARCHAR},
+            </if>
+            <if test="investmentCharacteristics != null">
+                #{investmentCharacteristics,jdbcType=VARCHAR},
+            </if>
+            <if test="exitMode != null">
+                #{exitMode,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <!-- 往项目分层表中记录一条数据 -->
+    <insert id="insertProLayer" parameterType="java.util.Map">
+        insert into pro_layer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                pro_id,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="proportion != null">
+                proportion,
+            </if>
+            <if test="issueRate != null">
+                issueRate,
+            </if>
+            <if test="proTerm != null">
+                proTerm,
+            </if>
+            <if test="averageTerm != null">
+                averageTerm,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                #{proId,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null">
+                #{amount,jdbcType=VARCHAR},
+            </if>
+            <if test="proportion != null">
+                #{proportion,jdbcType=VARCHAR},
+            </if>
+            <if test="issueRate != null">
+                #{issueRate,jdbcType=VARCHAR},
+            </if>
+            <if test="proTerm != null">
+                #{proTerm,jdbcType=VARCHAR},
+            </if>
+            <if test="averageTerm != null">
+                #{averageTerm,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 往项目分层表中记录一条数据 -->
+    <insert id="insertProLayerClass" parameterMap="proLayerParamMap">
+        insert into pro_layer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                pro_id,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="proportion != null">
+                proportion,
+            </if>
+            <if test="issueRate != null">
+                issueRate,
+            </if>
+            <if test="proTerm != null">
+                proTerm,
+            </if>
+            <if test="averageTerm != null">
+                averageTerm,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                #{proId,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null">
+                #{amount,jdbcType=VARCHAR},
+            </if>
+            <if test="proportion != null">
+                #{proportion,jdbcType=VARCHAR},
+            </if>
+            <if test="issueRate != null">
+                #{issueRate,jdbcType=VARCHAR},
+            </if>
+            <if test="proTerm != null">
+                #{proTerm,jdbcType=VARCHAR},
+            </if>
+            <if test="averageTerm != null">
+                #{averageTerm,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 往附件表中记录一条数据 -->
+    <insert id="insertAttachClass" parameterMap="attactParamMap" useGeneratedKeys="true" keyProperty="id">
+        insert into pro_attach
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                pro_id,
+            </if>
+            <if test="fileName != null">
+                file_name,
+            </if>
+            <if test="filePath != null">
+                file_path,
+            </if>
+            <if test="realFileName != null">
+                real_file_name,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="proAttachType != null" >
+                pro_attach_type,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="uploadPersonName != null" >
+                upload_person_name,
+            </if>
+            <if test="uploadPersonId != null" >
+                upload_person_Id,
+            </if>
+            <if test="updateTime != null" >
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                #{proId,jdbcType=VARCHAR},
+            </if>
+            <if test="fileName != null">
+                #{fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="filePath != null">
+                #{filePath,jdbcType=VARCHAR},
+            </if>
+            <if test="realFileName != null">
+                #{realFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="proAttachType != null">
+                #{proAttachType,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status, jdbcType=VARCHAR},
+            </if>
+            <if test="uploadPersonName != null">
+                #{uploadPersonName,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadPersonId != null">
+                #{uploadPersonId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <!--根据附件id修改附件信息-->
+    <update id="updateAttachByAttachId" parameterMap="attactParamMap">
+        update pro_attach set
+        <trim suffixOverrides=",">
+            <if test="proId != null and proId != 0">
+                pro_id=#{proId,jdbcType=INTEGER},
+            </if>
+            <if test="fileName != null">
+                file_name=#{fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="filePath != null">
+                file_path=#{filePath,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadPersonName != null">
+                upload_person_name=#{uploadPersonName,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadPersonId != null">
+                upload_person_Id=#{uploadPersonId,jdbcType=DECIMAL},
+            </if>
+            <if test="status != null">
+                status= #{status,jdbcType=VARCHAR}
+            </if>
+        </trim>
+        where
+        id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 根据项目id查询项目附件详情 -->
+    <select id="queryAttachByFileName" resultMap="attactMap" parameterType="java.lang.String">
+        select
+        id
+        ,pro_id
+        ,file_name
+        ,file_path
+        ,real_file_name
+        ,create_time, pro_attach_type, `status`,
+         upload_person_name, upload_person_Id, update_time
+        from pro_attach where file_name = #{fileName}
+        order by create_time DESC
+    </select>
+
+    <select id="queryProTeamByOrderId" resultType="java.lang.String" parameterType="java.lang.String">
+        select team from pro_info where order_id = #{orderId}
+    </select>
+
+    <update id="updateProInfo" parameterType="java.util.Map">
+        UPDATE pro_info set id = #{id}
+        <if test="orderId != null">
+            , order_id = #{orderId,jdbcType=VARCHAR}
+        </if>
+        <if test="beforeOrderId != null">
+            , before_order_id = #{beforeOrderId,jdbcType=VARCHAR}
+        </if>
+        <if test="date != null">
+            , date = #{date,jdbcType=VARCHAR}
+        </if>
+        <if test="team != null">
+            ,team = #{team,jdbcType=VARCHAR}
+        </if>
+        <if test="proName != null">
+            ,pro_name = #{proName,jdbcType=VARCHAR}
+        </if>
+        <if test="proModel != null">
+            ,pro_model = #{proModel,jdbcType=VARCHAR}
+        </if>
+        <if test="category != null">
+            ,category = #{category,jdbcType=VARCHAR}
+        </if>
+        <if test="assetSerAgency != null">
+            ,asset_ser_agency = #{assetSerAgency,jdbcType=VARCHAR}
+        </if>
+        <if test="inferiorInvestor != null">
+            ,inferior_investor = #{inferiorInvestor,jdbcType=VARCHAR}
+        </if>
+        <if test="diffAgency != null">
+            ,diff_agency = #{diffAgency,jdbcType=VARCHAR}
+        </if>
+        <if test="coopScale != null">
+            ,coop_scale = #{coopScale,jdbcType=VARCHAR}
+        </if>
+        <if test="coopState != null">
+            ,coop_state = #{coopState,jdbcType=VARCHAR}
+        </if>
+        <if test="planManagement != null">
+            ,plan_management = #{planManagement,jdbcType=VARCHAR}
+        </if>
+        <if test="techSuppport != null">
+            ,tech_suppport = #{techSuppport,jdbcType=VARCHAR}
+        </if>
+        <if test="promiser != null">
+            ,promiser = #{promiser,jdbcType=VARCHAR}
+        </if>
+        <if test="promiserLevel != null">
+            ,promiser_level = #{promiserLevel,jdbcType=VARCHAR}
+        </if>
+        <if test="guarantee != null">
+            ,guarantee = #{guarantee,jdbcType=VARCHAR}
+        </if>
+        <if test="guaranteeLevel != null">
+            ,guarantee_level = #{guaranteeLevel,jdbcType=VARCHAR}
+        </if>
+        <if test="guaInstitution != null">
+            ,gua_institution = #{guaInstitution,jdbcType=VARCHAR}
+        </if>
+        <if test="guaInstitutionLvel != null">
+            ,gua_institution_lvel = #{guaInstitutionLvel,jdbcType=VARCHAR}
+        </if>
+        <if test="totalAmount != null">
+            ,total_amount = #{totalAmount,jdbcType=VARCHAR}
+        </if>
+        <if test="cost != null">
+            ,cost = #{cost,jdbcType=VARCHAR}
+        </if>
+        <if test="term != null">
+            ,term = #{term,jdbcType=VARCHAR}
+        </if>
+        <if test="channel != null">
+            , channel = #{channel,jdbcType=VARCHAR}
+        </if>
+        <if test="frontIncome != null">
+            ,front_income = #{frontIncome,jdbcType=VARCHAR}
+        </if>
+        <if test="afterIncome != null">
+            ,after_income = #{afterIncome,jdbcType=VARCHAR}
+        </if>
+        <if test="requirements != null">
+            ,requirements = #{requirements,jdbcType=VARCHAR}
+        </if>
+        <if test="schedule != null">
+            ,schedule = #{schedule,jdbcType=VARCHAR}
+        </if>
+        <if test="requirementsState != null">
+            ,requirements_state = #{requirementsState,jdbcType=VARCHAR}
+        </if>
+        <if test="cyclePeriod != null">
+            ,cycle_period = #{cyclePeriod,jdbcType=VARCHAR}
+        </if>
+        <if test="amortizationPeriod != null">
+            ,amortization_period = #{amortizationPeriod,jdbcType=VARCHAR}
+        </if>
+        <if test="externalEnhancementAgencies != null">
+            ,external_enhancement_agencies = #{externalEnhancementAgencies,jdbcType=VARCHAR}
+        </if>
+        <if test="guaInstitutionLvel != null">
+            ,gua_institution_lvel = #{guaInstitutionLvel,jdbcType=VARCHAR}
+        </if>
+        <if test="projectTeamOpinion != null">
+            ,project_team_opinion = #{projectTeamOpinion,jdbcType=VARCHAR}
+        </if>
+        <if test="ratingSituation != null">
+            ,rating_situation = #{ratingSituation,jdbcType=VARCHAR}
+        </if>
+        <if test="assertType != null">
+            ,assert_type = #{assertType,jdbcType=VARCHAR}
+        </if>
+        <if test="assertSituation != null">
+            ,assert_situation = #{assertSituation,jdbcType=VARCHAR}
+        </if>
+        <if test="originalRightsHolder != null">
+            ,original_rights_holder = #{originalRightsHolder,jdbcType=VARCHAR}
+        </if>
+        <if test="holderRatingSituation != null">
+            , holder_rating_situation = #{holderRatingSituation,jdbcType=VARCHAR}
+        </if>
+        <if test="packageNum != null">
+            ,package_num = #{packageNum,jdbcType=VARCHAR}
+        </if>
+        <if test="packageScale != null">
+            ,package_scale = #{packageScale,jdbcType=VARCHAR}
+        </if>
+        <if test="proType != null">
+            ,pro_type = #{proType,jdbcType=VARCHAR}
+        </if>
+        <if test="otherModeNamel != null">
+            ,other_mode_namel = #{otherModeNamel,jdbcType=VARCHAR}
+        </if>
+        <if test="partners != null">
+            ,partners = #{partners,jdbcType=VARCHAR}
+        </if>
+        <if test="proDetails != null">
+            ,pro_details = #{proDetails,jdbcType=VARCHAR}
+        </if>
+        <if test="proCost != null">
+            ,pro_cost = #{proCost,jdbcType=VARCHAR}
+        </if>
+        <if test="proExpectation != null">
+            ,pro_expectation = #{proExpectation,jdbcType=VARCHAR}
+        </if>
+        <if test="proStarTime != null">
+            ,pro_star_time = #{proStarTime,jdbcType=VARCHAR}
+        </if>
+        <if test="proCompleteTime != null">
+            ,pro_complete_time = #{proCompleteTime,jdbcType=VARCHAR}
+        </if>
+        <if test="proTotal != null">
+            ,pro_total = #{proTotal,jdbcType=VARCHAR}
+        </if>
+        <if test="investmentAmount != null">
+            ,investment_amount = #{investmentAmount,jdbcType=VARCHAR}
+        </if>
+        <if test="layerStruct != null">
+            ,layer_struct = #{layerStruct,jdbcType=VARCHAR}
+        </if>
+        <if test="expectTime != null">
+            ,expect_time = #{expectTime,jdbcType=VARCHAR}
+        </if>
+        <if test="expectRate != null">
+            ,expect_rate = #{expectRate,jdbcType=VARCHAR}
+        </if>
+        <if test="avgTerm != null">
+            ,avg_term = #{avgTerm,jdbcType=VARCHAR}
+        </if>
+        <if test="largeTerm != null">
+            ,large_term = #{largeTerm,jdbcType=VARCHAR}
+        </if>
+        <if test="passDefaultRate != null">
+           , pass_default_rate = #{passDefaultRate,jdbcType=VARCHAR}
+        </if>
+        <if test="historyDataContrast != null">
+            ,history_data_contrast = #{historyDataContrast,jdbcType=VARCHAR}
+        </if>
+        <if test="riskAssessment != null">
+           , risk_assessment = #{riskAssessment,jdbcType=VARCHAR}
+        </if>
+        <if test="trustPlanTime != null">
+           , trust_plan_time = #{trustPlanTime,jdbcType=VARCHAR}
+        </if>
+        <if test="legalText != null">
+            ,legal_text = #{legalText,jdbcType=VARCHAR}
+        </if>
+        <if test="otherCondition != null">
+            ,other_condition = #{otherCondition,jdbcType=VARCHAR}
+        </if>
+        <if test="createUserId != null">
+            ,create_user_id = #{createUserId,jdbcType=VARCHAR}
+        </if>
+        <if test="systemAbutmentState != null">
+            ,system_abutment_state = #{systemAbutmentState,jdbcType=VARCHAR}
+        </if>
+        <if test="scaleCooperation != null">
+            ,scale_cooperation = #{scaleCooperation,jdbcType=VARCHAR}
+        </if>
+        <if test="stockBalance != null">
+            ,stock_balance = #{stockBalance,jdbcType=VARCHAR}
+        </if>
+        <if test="whetherWeshareInvest != null">
+            ,whether_weshare_invest = #{whetherWeshareInvest,jdbcType=VARCHAR}
+        </if>
+        <if test="investComment != null">
+            ,invest_comment = #{investComment,jdbcType=VARCHAR}
+        </if>
+
+        <if test="investmentTarget != null">
+            ,investment_target = #{investmentTarget,jdbcType=VARCHAR}
+        </if>
+        <if test="investmentPurpose != null">
+            ,investment_purpose = #{investmentPurpose,jdbcType=VARCHAR}
+        </if>
+        <if test="issueAmount != null">
+            ,issue_amount = #{issueAmount,jdbcType=VARCHAR}
+        </if>
+        <if test="leverage != null">
+            ,leverage = #{leverage,jdbcType=VARCHAR}
+        </if>
+        <if test="investmentCharacteristics != null">
+            ,investment_characteristics = #{investmentCharacteristics,jdbcType=VARCHAR}
+        </if>
+        <if test="exitMode != null">
+            ,exit_mode = #{exitMode,jdbcType=VARCHAR}
+        </if>
+        ,update_time = now()
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProLayerByPrimaryKey" parameterType="java.lang.Integer">
+        delete from pro_layer
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteProTeamByPrimaryKey" parameterType="java.lang.Integer">
+        delete from pro_team
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insertProLayerCopy" parameterType="java.util.Map">
+        insert into pro_layer_copy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                pro_id,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="proportion != null">
+                proportion,
+            </if>
+            <if test="issueRate != null">
+                issueRate,
+            </if>
+            <if test="proTerm != null">
+                proTerm,
+            </if>
+            <if test="averageTerm != null">
+                averageTerm,
+            </if>
+            <if test="optType != null">
+                opt_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                #{proId,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null">
+                #{amount,jdbcType=VARCHAR},
+            </if>
+            <if test="proportion != null">
+                #{proportion,jdbcType=VARCHAR},
+            </if>
+            <if test="issueRate != null">
+                #{issueRate,jdbcType=VARCHAR},
+            </if>
+            <if test="proTerm != null">
+                #{proTerm,jdbcType=VARCHAR},
+            </if>
+            <if test="averageTerm != null">
+                #{averageTerm,jdbcType=VARCHAR},
+            </if>
+            <if test="optType != null">
+                #{optType,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertProTeam" parameterType="java.util.Map">
+        insert into pro_team
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                pro_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                #{proId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertProTeamHis" parameterType="java.util.Map">
+        insert into pro_team_his
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                pro_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="hisProId != null">
+                his_pro_id,
+            </if>
+            <if test="optType != null">
+                opt_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                #{proId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="hisProId != null">
+                #{hisProId,jdbcType=VARCHAR},
+            </if>
+            <if test="optType != null">
+                #{optType,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+    <insert id="insertProModelRelation" parameterType="java.util.Map">
+        insert into pro_model_relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                pro_id,
+            </if>
+            <if test="modelId != null">
+                model_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                #{proId,jdbcType=VARCHAR},
+            </if>
+            <if test="modelId != null">
+                #{modelId,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertProModel" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+        insert into pro_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null">
+                code,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <insert id="insertProModelRelationHis" parameterType="java.util.Map">
+        insert into pro_model_relation_his
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                pro_id,
+            </if>
+            <if test="modelId != null">
+                model_id,
+            </if>
+            <if test="proHisId != null">
+                pro_his_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                #{proId,jdbcType=VARCHAR},
+            </if>
+            <if test="modelId != null">
+                #{modelId,jdbcType=VARCHAR},
+            </if>
+            <if test="proHisId != null">
+                #{proHisId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectAttachList" parameterType="java.util.List" resultMap="attactMap">
+        select
+          id,pro_id,real_file_name,file_name,file_path,create_time,pro_attach_type,status,upload_person_name,upload_person_Id,update_time
+        from pro_attach
+        where id in
+        <foreach collection="attachIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="batchInsertAttachCopy" parameterType="java.util.List">
+        insert into pro_attach_copy (pro_id,real_file_name,file_name,file_path,pro_attach_type,status,upload_person_name,upload_person_Id,opt_type)
+        values
+        <foreach collection="attaches" index="index" item="item" separator=",">
+            (#{item.proId},#{item.realFileName},#{item.fileName},#{item.filePath},#{item.proAttachType},#{item.status},#{item.uploadPersonName},#{item.uploadPersonId},#{item.optType})
+        </foreach>
+    </insert>
+
+    <delete id="deleteAttachByPrimaryKey" parameterType="java.lang.String">
+        delete from pro_attach where id = #{id}
+    </delete>
+
+    <insert id="insertAttachCopyClass" parameterMap="attactParamMap" useGeneratedKeys="true" keyProperty="id">
+        insert into pro_attach_copy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                pro_id,
+            </if>
+            <if test="fileName != null">
+                file_name,
+            </if>
+            <if test="filePath != null">
+                file_path,
+            </if>
+            <if test="realFileName != null">
+                real_file_name,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="proAttachType != null" >
+                pro_attach_type,
+            </if>
+            <if test="status != null" >
+                `status`,
+            </if>
+            <if test="uploadPersonName != null" >
+                upload_person_name,
+            </if>
+            <if test="uploadPersonId != null" >
+                upload_person_Id,
+            </if>
+            <if test="updateTime != null" >
+                update_time,
+            </if>
+            <if test="optType != null" >
+                opt_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                #{proId,jdbcType=VARCHAR},
+            </if>
+            <if test="fileName != null">
+                #{fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="filePath != null">
+                #{filePath,jdbcType=VARCHAR},
+            </if>
+            <if test="realFileName != null">
+                #{realFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="proAttachType != null" >
+                #{proAttachType,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadPersonName != null" >
+                #{uploadPersonName,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadPersonId != null" >
+                #{uploadPersonId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="optType != null" >
+                #{optType,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <update id="updateAttachCopyByAttachId" parameterMap="attactParamMap">
+        update pro_attach_copy set
+        <trim suffixOverrides=",">
+            <if test="proId != null">
+                pro_id=#{proId,jdbcType=INTEGER},
+            </if>
+            <if test="fileName != null">
+                file_name=#{fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="filePath != null">
+                file_path=#{filePath,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadPersonName != null">
+                upload_person_name=#{uploadPersonName,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadPersonId != null">
+                upload_person_Id=#{uploadPersonId,jdbcType=DECIMAL},
+            </if>
+            <if test="status != null">
+                status= #{status,jdbcType=VARCHAR}
+            </if>
+        </trim>
+        where
+        ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deleteAttachByProId" parameterType="java.lang.String">
+        delete from pro_attach where pro_id = #{proId}
+    </delete>
+
+    <insert id="batchInsertAttach" parameterType="java.util.List">
+        insert into pro_attach (pro_id,real_file_name,file_name,file_path,pro_attach_type,status,upload_person_name,upload_person_Id)
+        values
+        <foreach collection="attaches" index="index" item="item" separator=",">
+            (#{item.proId},#{item.realFileName},#{item.fileName},#{item.filePath},#{item.proAttachType},#{item.status},#{item.uploadPersonName},#{item.uploadPersonId})
+        </foreach>
+    </insert>
+
+    <select id="selectApprovalPros" resultType="com.weshareholdings.approval.vo.FileApprovalVo">
+        select b.* from (
+        SELECT pinfo.id as proId,	if(pinfo.pro_type=4,pinfo.system_name,pinfo.pro_name) as proName, pinfo.pro_type as proType, wo.create_Time as createTime,
+        '1' as orderState, wo.id as orderId
+        FROM wf_order wo
+        LEFT JOIN pro_info pinfo ON wo.id = pinfo.order_id
+        WHERE 1=1
+        <if test="proName != null and !&quot;&quot;.equals(proName.trim())">
+            AND pinfo.pro_name like concat('%',#{proName},'%')
+        </if>
+        <if test="baseProTypes !=null and baseProTypes.size() > 0">
+            AND pinfo.pro_type IN
+            <foreach collection="baseProTypes" index="index" item="item" open="(" separator=","
+                     close=")">
+                #{item}
+            </foreach>
+        </if>
+        ) b
+        where 1=1
+        <if test="proType != null and !&quot;&quot;.equals(proType.trim())">
+            and b.proType = #{proType}
+        </if>
+        order by b.createTime desc
+    </select>
+
+    <!--项目团队Map-->
+    <resultMap id="teamMap" type="com.weshareholdings.approval.po.Team">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="username" column="username"/>
+        <result property="fullName" column="fullname"/>
+    </resultMap>
+    <select id="queryTeamByProId" parameterType="java.lang.String" resultMap="teamMap">
+        SELECT
+            pt.id,pt.user_id,su.username,su.fullname
+        FROM pro_info pro
+        LEFT JOIN pro_team pt ON pro.id = pt.pro_id
+        LEFT JOIN sec_user su ON pt.user_id = su.id
+        WHERE
+          pro_id = #{proId}
+    </select>
+    <select id="queryTeamByOrderId" parameterType="java.lang.String" resultMap="teamMap">
+        SELECT
+            pt.id,pt.user_id,su.username
+        FROM pro_info pro
+            LEFT JOIN pro_team pt ON pro.id = pt.pro_id
+            LEFT JOIN sec_user su ON pt.user_id = su.id
+        WHERE
+            order_id = #{orderId}
+    </select>
+
+
+
+    <select id="queryProModelByProId" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+           id
+        FROM pro_model_relation
+        WHERE
+          pro_id = #{proId}
+    </select>
+
+    <delete id="deleteProModelByPrimaryKey" parameterType="java.lang.Integer">
+        delete from pro_model_relation
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <!--项目业务模式Map-->
+    <resultMap id="proModelDetailMap" type="com.weshareholdings.approval.po.ProModel">
+        <result property="modelId" column="id"/>
+        <result property="code" column="code"/>
+        <result property="name" column="name"/>
+    </resultMap>
+    <select id="queryProModelDetailByProId" parameterType="java.lang.String" resultMap="proModelDetailMap">
+        SELECT
+            pm.id,pm.code,pm.name
+        FROM pro_model pm
+        LEFT JOIN pro_model_relation pmr ON pm.id = pmr.model_id
+        WHERE
+          pmr.pro_id = #{proId}
+    </select>
+
+    <select id="selectProInfoByAttachId" parameterType="java.lang.String" resultMap="proMap">
+        select pro_info.* from pro_info
+        left join pro_attach on pro_attach.pro_id = pro_info.id
+        where pro_attach.id = #{attachId}
+    </select>
+
+    <!--往交易结构表中插入一条数据-->
+    <insert id="insertProInfoTradeStructure" parameterType="java.util.Map">
+        insert into pro_info_trade_structure
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                pro_id,
+            </if>
+            <if test="underlyingAssetsType != null">
+                underlying_assets_type,
+            </if>
+            <if test="underlyingAssetsStandard != null">
+                underlying_assets_standard,
+            </if>
+            <if test="ratioAmount != null">
+                ratio_amount,
+            </if>
+            <if test="fundArrangements != null">
+                fund_arrangements,
+            </if>
+            <if test="termInvestment != null">
+                term_investment,
+            </if>
+            <if test="rateInvestment != null">
+                rate_investment,
+            </if>
+            <if test="ratingResult != null">
+                rating_result,
+            </if>
+            <if test="isOriginalList != null">
+                is_original_list,
+            </if>
+            <if test="isOriginalBuyback != null">
+                is_original_buyback,
+            </if>
+            <if test="breachContent != null">
+                breach_content,
+            </if>
+            <if test="breachCompare != null">
+                breach_compare,
+            </if>
+            <if test="totalFundAmount != null">
+                total_fund_amount,
+            </if>
+            <if test="seedFundProportion != null">
+                seed_fund_proportion,
+            </if>
+            <if test="estimatedManagementFee != null">
+                estimated_management_fee,
+            </if>
+            <if test="scopeInvestment != null">
+                scope_investment,
+            </if>
+            <if test="riskArrangement != null">
+                risk_arrangement,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                #{proId,jdbcType=VARCHAR},
+            </if>
+            <if test="underlyingAssetsType != null">
+                #{underlyingAssetsType,jdbcType=VARCHAR},
+            </if>
+            <if test="underlyingAssetsStandard != null">
+                #{underlyingAssetsStandard,jdbcType=VARCHAR},
+            </if>
+            <if test="ratioAmount != null">
+                #{ratioAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="fundArrangements != null">
+                #{fundArrangements,jdbcType=VARCHAR},
+            </if>
+            <if test="termInvestment != null">
+                #{termInvestment,jdbcType=VARCHAR},
+            </if>
+            <if test="rateInvestment != null">
+                #{rateInvestment,jdbcType=VARCHAR},
+            </if>
+            <if test="ratingResult != null">
+                #{ratingResult,jdbcType=VARCHAR},
+            </if>
+            <if test="isOriginalList != null">
+                #{isOriginalList,jdbcType=VARCHAR},
+            </if>
+            <if test="isOriginalBuyback != null">
+                #{isOriginalBuyback,jdbcType=VARCHAR},
+            </if>
+            <if test="breachContent != null">
+                #{breachContent,jdbcType=VARCHAR},
+            </if>
+            <if test="breachCompare != null">
+                #{breachCompare,jdbcType=VARCHAR},
+            </if>
+            <if test="totalFundAmount != null">
+                #{totalFundAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="seedFundProportion != null">
+                #{seedFundProportion,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedManagementFee != null">
+                #{estimatedManagementFee,jdbcType=VARCHAR},
+            </if>
+            <if test="scopeInvestment != null">
+                #{scopeInvestment,jdbcType=VARCHAR},
+            </if>
+            <if test="riskArrangement != null">
+                #{riskArrangement,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!--往交易结构历史表中插入一条数据-->
+    <insert id="insertProInfoTradeStructureCopy" parameterType="java.util.Map">
+        insert into pro_info_trade_structure_copy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proHisId != null">
+                pro_his_id,
+            </if>
+            <if test="underlyingAssetsType != null">
+                underlying_assets_type,
+            </if>
+            <if test="underlyingAssetsStandard != null">
+                underlying_assets_standard,
+            </if>
+            <if test="ratioAmount != null">
+                ratio_amount,
+            </if>
+            <if test="fundArrangements != null">
+                fund_arrangements,
+            </if>
+            <if test="termInvestment != null">
+                term_investment,
+            </if>
+            <if test="rateInvestment != null">
+                rate_investment,
+            </if>
+            <if test="ratingResult != null">
+                rating_result,
+            </if>
+            <if test="isOriginalList != null">
+                is_original_list,
+            </if>
+            <if test="isOriginalBuyback != null">
+                is_original_buyback,
+            </if>
+            <if test="breachContent != null">
+                breach_content,
+            </if>
+            <if test="breachCompare != null">
+                breach_compare,
+            </if>
+            <if test="totalFundAmount != null">
+                total_fund_amount,
+            </if>
+            <if test="seedFundProportion != null">
+                seed_fund_proportion,
+            </if>
+            <if test="estimatedManagementFee != null">
+                estimated_management_fee,
+            </if>
+            <if test="scopeInvestment != null">
+                scope_investment,
+            </if>
+            <if test="riskArrangement != null">
+                risk_arrangement,
+            </if>
+            <if test="optType != null">
+                opt_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proHisId != null">
+                #{proHisId,jdbcType=VARCHAR},
+            </if>
+            <if test="underlyingAssetsType != null">
+                #{underlyingAssetsType,jdbcType=VARCHAR},
+            </if>
+            <if test="underlyingAssetsStandard != null">
+                #{underlyingAssetsStandard,jdbcType=VARCHAR},
+            </if>
+            <if test="ratioAmount != null">
+                #{ratioAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="fundArrangements != null">
+                #{fundArrangements,jdbcType=VARCHAR},
+            </if>
+            <if test="termInvestment != null">
+                #{termInvestment,jdbcType=VARCHAR},
+            </if>
+            <if test="rateInvestment != null">
+                #{rateInvestment,jdbcType=VARCHAR},
+            </if>
+            <if test="ratingResult != null">
+                #{ratingResult,jdbcType=VARCHAR},
+            </if>
+            <if test="isOriginalList != null">
+                #{isOriginalList,jdbcType=VARCHAR},
+            </if>
+            <if test="isOriginalBuyback != null">
+                #{isOriginalBuyback,jdbcType=VARCHAR},
+            </if>
+            <if test="breachContent != null">
+                #{breachContent,jdbcType=VARCHAR},
+            </if>
+            <if test="breachCompare != null">
+                #{breachCompare,jdbcType=VARCHAR},
+            </if>
+            <if test="totalFundAmount != null">
+                #{totalFundAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="seedFundProportion != null">
+                #{seedFundProportion,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedManagementFee != null">
+                #{estimatedManagementFee,jdbcType=VARCHAR},
+            </if>
+            <if test="scopeInvestment != null">
+                #{scopeInvestment,jdbcType=VARCHAR},
+            </if>
+            <if test="riskArrangement != null">
+                #{riskArrangement,jdbcType=VARCHAR},
+            </if>
+            <if test="optType != null">
+                #{optType,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+    <!--根据id修改项目交易结构-->
+    <update id="updateProTradeStructure" parameterType="java.util.Map">
+        update pro_info_trade_structure set
+        <trim suffixOverrides=",">
+            <if test="proId != null">
+                pro_id=#{proId,jdbcType=INTEGER},
+            </if>
+            <if test="underlyingAssetsType != null">
+                underlying_assets_type=#{underlyingAssetsType,jdbcType=VARCHAR},
+            </if>
+            <if test="underlyingAssetsStandard != null">
+                underlying_assets_standard=#{underlyingAssetsStandard,jdbcType=VARCHAR},
+            </if>
+            <if test="ratioAmount != null">
+                ratio_amount=#{ratioAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="fundArrangements != null">
+                fund_arrangements=#{fundArrangements,jdbcType=DECIMAL},
+            </if>
+            <if test="termInvestment != null">
+                term_investment= #{termInvestment,jdbcType=VARCHAR},
+            </if>
+            <if test="rateInvestment != null">
+                rate_investment= #{rateInvestment,jdbcType=VARCHAR},
+            </if>
+            <if test="ratingResult != null">
+                rating_result= #{ratingResult,jdbcType=VARCHAR},
+            </if>
+            <if test="isOriginalList != null">
+                is_original_list= #{isOriginalList,jdbcType=VARCHAR},
+            </if>
+            <if test="isOriginalBuyback != null">
+                is_original_buyback= #{isOriginalBuyback,jdbcType=VARCHAR},
+            </if>
+            <if test="breachContent != null">
+                breach_content= #{breachContent,jdbcType=VARCHAR},
+            </if>
+            <if test="breachCompare != null">
+                breach_compare= #{breachCompare,jdbcType=VARCHAR},
+            </if>
+            <if test="totalFundAmount != null">
+                total_fund_amount= #{totalFundAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="seedFundProportion != null">
+                seed_fund_proportion= #{seedFundProportion,jdbcType=VARCHAR},
+            </if>
+            <if test="estimatedManagementFee != null">
+                estimated_management_fee= #{estimatedManagementFee,jdbcType=VARCHAR},
+            </if>
+            <if test="scopeInvestment != null">
+                scope_investment= #{scopeInvestment,jdbcType=VARCHAR},
+            </if>
+            <if test="riskArrangement != null">
+                risk_arrangement= #{riskArrangement,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        where
+        ID = #{id,jdbcType=VARCHAR}
+    </update>
+</mapper>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weshareholdings.approval.repository.EliminatGoldMapper">
+
+    <resultMap id="proMap" type="com.weshareholdings.approval.vo.VoteProInfo">
+        <result property="id" column="id" jdbcType="VARCHAR"></result>
+        <result property="proName" column="pro_name" jdbcType="VARCHAR"></result>
+        <result property="proType" column="pro_type" jdbcType="VARCHAR"></result>
+        <result property="orderId" column="order_id" jdbcType="VARCHAR"></result>
+        <result property="updateTime" column="update_time" jdbcType="VARCHAR"></result>
+        <result property="createTime" column="create_time" jdbcType="VARCHAR"></result>
+        <result property="orderState" column="order_State" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+
+    <select id="queryEliminatGoldList" resultMap="proMap" parameterType="java.lang.String">
+        select distinct
+            t.id
+            ,t.pro_name
+            ,t.pro_type
+            ,DATE_FORMAT(t.update_time,'%Y-%m-%d %H:%i:%s') update_time
+            ,DATE_FORMAT(t.create_time,'%Y-%m-%d %H:%i:%s') create_time
+            ,t.order_id
+            ,if(c.order_State=0,'已通过',if(c.order_State=1,'审批中','已终止')) order_State
+        from
+          pro_info t
+        left join pro_team b on t.id = b.pro_id
+        left join wf_hist_order c on t.order_id = c.id
+        <where>
+            t.pro_type = #{goldProType}
+            <if test="operator != null and !&quot;&quot;.equals(operator.trim())">
+                and b.user_id = #{operator}
+            </if>
+            <if test="proName != null and !&quot;&quot;.equals(proName.trim())">
+                and t.pro_name like concat('%',#{proName},'%')
+            </if>
+        </where>
+        order by t.create_Time desc
+    </select>
+
+
+    <resultMap id="proGoldMap" type="com.weshareholdings.approval.vo.GoldProInfo">
+        <result property="id" column="id" jdbcType="VARCHAR"></result>
+        <result property="proType" column="pro_type" jdbcType="VARCHAR"></result>
+        <result property="proName" column="pro_name" jdbcType="VARCHAR"></result>
+        <result property="updateTime" column="update_time" jdbcType="VARCHAR"></result>
+        <result property="createTime" column="create_time" jdbcType="VARCHAR"></result>
+        <result property="proModel" column="pro_model" jdbcType="VARCHAR"></result>
+        <result property="partners" column="partners" jdbcType="VARCHAR"></result>
+        <result property="proDetails" column="pro_details" jdbcType="VARCHAR"></result>
+        <result property="proCost" column="pro_cost" jdbcType="VARCHAR"></result>
+        <result property="proExpectation" column="pro_expectation" jdbcType="VARCHAR"></result>
+        <result property="proStarTime" column="pro_star_time" jdbcType="VARCHAR"></result>
+        <result property="proCompleteTime" column="pro_complete_time" jdbcType="VARCHAR"></result>
+        <result property="beforeOrderId" column="before_order_id" jdbcType="VARCHAR"></result>
+        <result property="orderId" column="order_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 根据流程实例id查询项目详情 -->
+    <select id="queryProByOtderId" resultMap="proGoldMap" parameterType="java.lang.String">
+        select
+        id
+        ,pro_type
+        ,pro_name
+        ,DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time
+        ,DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') create_time
+        ,pro_model
+        ,partners
+        ,pro_details
+        ,pro_cost
+        ,pro_expectation
+        ,pro_star_time
+        ,pro_complete_time
+        ,before_order_id
+        ,order_id
+        from pro_info where order_id = #{orderId}
+    </select>
+
+</mapper>

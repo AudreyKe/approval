@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weshareholdings.approval.repository.OrderMapper">
+
+    <resultMap id="orderMap" type="com.weshareholdings.approval.vo.OrderResult">
+        <result property="processId" column="processId" jdbcType="VARCHAR"/>
+        <result property="orderId" column="orderId" jdbcType="VARCHAR"/>
+        <result property="orderName" column="orderName" jdbcType="VARCHAR"/>
+        <result property="createTime" column="createTime" jdbcType="VARCHAR"/>
+        <result property="taskId" column="taskId" jdbcType="VARCHAR"/>
+        <result property="orderNo" column="orderNo" jdbcType="VARCHAR"/>
+        <result property="orderState" column="orderState" jdbcType="VARCHAR"/>
+        <result property="orderVariable" column="orderVariable" jdbcType="VARCHAR"/>
+        <result property="performType" column="performType" jdbcType="VARCHAR"/>
+        <result property="taskType" column="taskType" jdbcType="VARCHAR"/>
+        <result property="proType" column="proType" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="queryOrderResult" resultMap="orderMap" parameterType="java.lang.String">
+        SELECT DISTINCT o.process_Id as processId,o.id as orderId,t.id as taskId, o.variable AS orderVariable,
+        o.order_No as
+        orderNo ,t.create_Time as createTime, "1" as orderState, pro.pro_type as performType, if(pro.pro_type=4,pro.system_name,pro.pro_name) as
+        orderName, t.display_Name as taskType, pro.pro_type as proType
+        from wf_task t
+        left join wf_order o on t.order_id = o.id
+        left join wf_task_actor ta on ta.task_id=t.id
+        left join pro_info pro on pro.order_id = o.id
+        <where>
+            1=1
+            <if test="operator != null and !&quot;&quot;.equals(operator.trim())">
+                and ta.actor_Id = #{operator}
+            </if>
+            <if test="orderName != null and !&quot;&quot;.equals(orderName.trim())">
+                and if(pro.pro_type=4,pro.system_name,pro.pro_name) like concat('%',#{orderName},'%')
+            </if>
+            <if test="proTypes !=null and proTypes.length > 0">
+                AND pro.pro_type IN
+                <foreach collection="proTypes" index="index" item="item" open="(" separator=","
+                         close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by t.create_Time desc
+    </select>
+    <select id="queryHistoryTask" resultMap="orderMap" parameterType="java.lang.String">
+        SELECT a.* FROM (
+            SELECT DISTINCT
+              o.id as orderId
+              ,o.process_Id as processId
+              ,t.id as taskId
+              ,o.variable AS orderVariable
+              ,o.order_No as orderNo
+              ,t.create_Time as createTime
+              ,o.order_State as orderState
+              ,pro.pro_type as performType
+              ,if(pro.pro_type=4,pro.system_name,pro.pro_name) as orderName
+              ,t.display_Name as taskType
+              ,pro.pro_type as proType
+            from wf_hist_task t
+            left join wf_hist_order o on t.order_id = o.id
+            left join wf_hist_task_actor ta on ta.task_id=t.id
+            left join pro_info pro on pro.order_id = o.id
+            <where>
+                1=1
+                <if test="operator != null and !&quot;&quot;.equals(operator.trim())">
+                    and (t.operator = #{operator} or  EXISTS (SELECT a.task_Id FROM wf_hist_task_actor a WHERE a.actor_Id = #{operator} AND a.task_id = ta.task_Id AND a.type='00'))
+                    and ta.actor_Id = #{operator}
+                </if>
+                <if test="orderName != null and !&quot;&quot;.equals(orderName.trim())">
+                    and if(pro.pro_type=4,pro.system_name,pro.pro_name) like concat('%',#{orderName},'%')
+                </if>
+                <if test="proTypes !=null and proTypes.length > 0">
+                    AND pro.pro_type IN
+                    <foreach collection="proTypes" index="index" item="item" open="(" separator=","
+                             close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </where>
+            order by t.create_Time desc
+        ) a GROUP BY a.orderId order by a.createTime desc
+    </select>
+    <select id="queryOrder" resultMap="orderMap" parameterType="java.lang.String">
+        select b.* from (
+            select
+              o.process_Id as processId
+              ,o.id as orderId
+              , o.variable as orderVariable
+              , o.order_No as orderNo
+              ,o.create_Time as createTime
+              ,o.order_State as orderState
+              ,if(pro.pro_type=4,pro.system_name,pro.pro_name) as orderName
+              ,pro.pro_type as performType
+              , pro.pro_type as proType
+            from wf_hist_order o
+            left join wf_process p on p.id = o.process_id
+            left join pro_info pro on pro.order_id = o.id
+            <where>
+                1 = 1
+                <if test="operator != null and !&quot;&quot;.equals(operator.trim())">
+                    and o.creator = #{operator}
+                </if>
+                <if test="orderState != null and !&quot;&quot;.equals(orderState.trim())">
+                    and o.order_State = #{orderState}
+                </if>
+                <if test="processId != null and !&quot;&quot;.equals(processId.trim())">
+                    and o.process_Id = #{processId}
+                </if>
+                <if test="orderName != null and !&quot;&quot;.equals(orderName.trim())">
+                    and if(pro.pro_type=4,pro.system_name,pro.pro_name) like concat('%',#{orderName},'%')
+                </if>
+                <if test="baseProTypes !=null and baseProTypes.size() > 0">
+                    AND pro.pro_type IN
+                    <foreach collection="baseProTypes" index="index" item="item" open="(" separator=","
+                             close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </where>
+        ) b
+        where 1=1
+        <if test="proType != null and !&quot;&quot;.equals(proType.trim())">
+            and b.proType = #{proType}
+        </if>
+        order by b.createTime desc
+    </select>
+    <select id="queryOrderFlowById" parameterType="java.lang.String" resultType="java.lang.String">
+        select wt.variable from wf_hist_task wt
+        <where>
+            1=1
+            <if test="orderId != null">
+                and wt.order_Id = #{orderId}
+            </if>
+            order by create_Time asc
+        </where>
+    </select>
+    <select id="queryApprovalByBeforeOrderId" parameterType="java.lang.String" resultType="java.lang.String">
+        select o.id from wf_hist_order o
+        left join pro_info pro ON pro.order_id = o.id
+        <where>
+            o.order_State != '2'
+            <if test="beforeOrderId != null">
+                and pro.before_order_id = #{beforeOrderId}
+            </if>
+        </where>
+    </select>
+
+    <!--<select id="queryApproval" resultMap="orderMap" parameterType="java.lang.String">
+        select o.process_Id as processId,o.id as orderId, o.variable as orderVariable, o.order_No as
+        orderNo ,o.create_Time as createTime,o.order_State as orderState, pro.pro_name as orderName,p.display_Name as
+        performType
+        from wf_hist_order o
+        left join wf_process p on p.id = o.process_id
+        left join pro_info pro on pro.order_id = o.id
+        <where>
+            1=1
+            <if test="operator != null and !&quot;&quot;.equals(operator.trim())">
+                and o.creator = #{operator}
+            </if>
+            <if test="orderState != null and !&quot;&quot;.equals(orderState.trim())">
+                and o.order_State = #{orderState}
+            </if>
+            <if test="processId != null and !&quot;&quot;.equals(processId.trim())">
+                and o.process_Id = #{processId}
+            </if>
+            <if test="orderName != null and !&quot;&quot;.equals(orderName.trim())">
+                and pro.pro_name like concat('%',#{orderName},'%')
+            </if>
+            and o.id not in
+            (
+            select distinct pro.before_order_id from wf_hist_order o
+            join pro_info pro ON pro.order_id = o.id
+            where
+            o.order_State != '2'
+            and pro.before_order_id in(
+            select o.id from wf_hist_order o
+            <where>1=1
+                <if test="
+                operator != null and !&quot;&quot;.equals(operator.trim())">
+                    and o.creator = #{operator}
+                </if>
+                <if test="orderState != null and !&quot;&quot;.equals(orderState.trim())">
+                    and o.order_State = #{orderState}
+                </if>
+                <if test="processId != null and !&quot;&quot;.equals(processId.trim())">
+                    and o.process_Id = #{processId}
+                </if>
+            </where>
+            )
+            )
+        </where>
+        order by o.create_Time desc
+    </select>-->
+
+    <select id="queryApproval" parameterType="java.lang.String" resultMap="orderMap">
+        select wto.id as orderId, wto.create_Time as createTime,wto.order_State as orderState,
+                pinfo.pro_name as orderName,pinfo.pro_type as proType
+        from pro_team pt
+        left join pro_info pinfo on pinfo.id = pt.pro_id
+        left join wf_hist_order wto on wto.id = pinfo.order_id
+        where
+        (
+            pinfo.pro_type = 1
+            or (
+                wto.order_State = '0'
+                and pinfo.pro_type = 0
+            )
+        )
+        <if test="userId != null">
+            and pt.user_id = #{userId}
+        </if>
+        <if test="orderName != null and !&quot;&quot;.equals(orderName.trim())">
+            and pinfo.pro_name = #{orderName}
+        </if>
+        <if test="proType != null and !&quot;&quot;.equals(proType.trim())">
+            and pinfo.pro_type = #{proType}
+        </if>
+        order by createTime desc
+    </select>
+</mapper>

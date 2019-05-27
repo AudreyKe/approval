@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weshareholdings.approval.repository.SurrogateMapper">
+    <resultMap id="surrogateVoMap" type="com.weshareholdings.approval.vo.SurrogateVo">
+        <result property="proDisplayName" column="proDisplayName" jdbcType="VARCHAR"></result>
+        <result property="operatorId" column="operatorId" jdbcType="VARCHAR"></result>
+        <result property="surrogateId" column="surrogateId" jdbcType="VARCHAR"></result>
+        <result property="batchId" column="batchId" jdbcType="VARCHAR"></result>
+        <result property="sdate" column="sdate" jdbcType="VARCHAR"></result>
+        <result property="edate" column="edate" jdbcType="VARCHAR"></result>
+        <result property="odate" column="odate" jdbcType="VARCHAR"></result>
+        <result property="state" column="state" jdbcType="VARCHAR"></result>
+        <result property="processId" column="process_id" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <resultMap id="surrogateMap" type="com.weshareholdings.approval.po.SurrogateInfo">
+        <result property="id" column="id" jdbcType="VARCHAR"></result>
+        <result property="processName" column="process_Name" jdbcType="VARCHAR"></result>
+        <result property="operator" column="operator" jdbcType="VARCHAR"></result>
+        <result property="surrogate" column="surrogate" jdbcType="VARCHAR"></result>
+        <result property="odate" column="odate" jdbcType="VARCHAR"></result>
+        <result property="sdate" column="sdate" jdbcType="VARCHAR"></result>
+        <result property="edate" column="edate" jdbcType="VARCHAR"></result>
+        <result property="state" column="state" jdbcType="INTEGER"></result>
+        <result property="proDisplayName" column="proDisplayName" jdbcType="VARCHAR"></result>
+        <result property="operatorId" column="operatorId" jdbcType="VARCHAR"></result>
+        <result property="surrogateId" column="surrogateId" jdbcType="VARCHAR"></result>
+        <result property="batchId" column="batchId" jdbcType="VARCHAR"></result>
+        <result property="surrogateId" column="surrogateId" jdbcType="VARCHAR"></result>
+        <result property="type" column="type" jdbcType="VARCHAR"></result>
+        <result property="orderId" column="order_id" jdbcType="VARCHAR"></result>
+        <result property="processId" column="process_id" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <select id="querySurrogateListByBatchId" resultMap="surrogateMap" parameterType="java.lang.String">
+        SELECT
+          id AS surrogateId,process_Name,operator,surrogate,odate,sdate,edate,state,order_id,task_id,batch_id as  batchId,#{type} type,process_id
+        FROM wf_surrogate
+        where batch_id = #{batchId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="querySurrogateList" resultMap="surrogateVoMap" parameterType="java.lang.String">
+        SELECT distinct
+        ws.process_Name AS proDisplayName
+        ,ws.operator AS operatorId,
+        ws.surrogate AS surrogateId
+        ,ws.batch_id AS batchId
+        ,ws.sdate AS sdate
+        ,ws.edate AS edate
+        ,ws.state
+        ,ws.process_id
+        FROM wf_surrogate ws
+        LEFT JOIN wf_process wp ON wp.name= ws.process_Name
+        LEFT JOIN sec_user su1 ON su1.username = ws.operator
+        LEFT JOIN sec_user su2 ON su2.username = ws.surrogate
+        <where>
+            ws.state != 0
+            <if test="operator != null">
+                and ws.operator = #{operator}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertSurrogate" parameterType="com.weshareholdings.approval.po.SurrogateInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into wf_surrogate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="processName != null">
+                process_Name,
+            </if>
+            <if test="operator != null">
+                operator,
+            </if>
+            <if test="surrogate != null">
+                surrogate,
+            </if>
+            <if test="sdate != null">
+                sdate,
+            </if>
+            <if test="edate != null">
+                edate,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="taskId != null">
+                task_id,
+            </if>
+            <if test="batchId != null">
+                batch_id,
+            </if>
+            <if test="processId != null">
+                process_id,
+            </if>
+            odate
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="processName != null">
+                #{processName,jdbcType=VARCHAR},
+            </if>
+            <if test="operator != null">
+                #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="surrogate != null">
+                #{surrogate,jdbcType=VARCHAR},
+            </if>
+            <if test="sdate != null">
+                #{sdate,jdbcType=VARCHAR},
+            </if>
+            <if test="edate != null">
+                #{edate,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="taskId != null">
+                #{taskId,jdbcType=VARCHAR},
+            </if>
+            <if test="batchId != null">
+                #{batchId,jdbcType=VARCHAR},
+            </if>
+            <if test="processId != null">
+                #{processId,jdbcType=VARCHAR},
+            </if>
+            now()
+        </trim>
+        <selectKey resultType="java.lang.String" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <insert id="insertSurrogateHis" parameterType="com.weshareholdings.approval.po.SurrogateInfo">
+        insert into wf_surrogate_his
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="surrogateId != null">
+                surrogate_id,
+            </if>
+            <if test="processName != null">
+                process_Name,
+            </if>
+            <if test="operator != null">
+                operator,
+            </if>
+            <if test="surrogate != null">
+                surrogate,
+            </if>
+            <if test="sdate != null">
+                sdate,
+            </if>
+            <if test="edate != null">
+                edate,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="taskId != null">
+                task_id,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="batchId != null">
+                batch_id,
+            </if>
+            <if test="processId != null">
+                process_id,
+            </if>
+            odate
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="surrogateId != null">
+                #{surrogateId,jdbcType=VARCHAR},
+            </if>
+            <if test="processName != null">
+                #{processName,jdbcType=VARCHAR},
+            </if>
+            <if test="operator != null">
+                #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="surrogate != null">
+                #{surrogate,jdbcType=VARCHAR},
+            </if>
+            <if test="sdate != null">
+                #{sdate,jdbcType=VARCHAR},
+            </if>
+            <if test="edate != null">
+                #{edate,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="taskId != null">
+                #{taskId,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="batchId != null">
+                #{batchId,jdbcType=VARCHAR},
+            </if>
+            <if test="processId != null">
+                #{processId,jdbcType=VARCHAR},
+            </if>
+            now()
+        </trim>
+    </insert>
+
+    <insert id="batchInsertSurrogateHis" parameterType="java.util.List">
+        insert into wf_surrogate_his (surrogate_id,order_id,task_id,process_Name,operator,surrogate,odate,sdate,edate,state,type,batch_id,process_id)
+        values
+        <foreach collection="surrogateInfos" index="index" item="item" separator=",">
+            (#{item.surrogateId},#{item.orderId},#{item.taskId},#{item.processName},#{item.operator},#{item.surrogate},#{item.odate},#{item.sdate},#{item.edate},#{item.state},#{item.type},#{item.batchId},#{item.processId})
+        </foreach>
+    </insert>
+
+    <insert id="batchInsertSurrogate" parameterType="java.util.List">
+        insert into wf_surrogate (id,order_id,task_id,process_Name,operator,surrogate,odate,sdate,edate,batch_id,process_id)
+        values
+        <foreach collection="surrogateInfos" index="index" item="item" separator=",">
+            (#{item.id},#{item.orderId},#{item.taskId},#{item.processName},#{item.operator},#{item.surrogate},#{item.odate},#{item.sdate},#{item.edate},#{item.batchId},#{item.processId})
+        </foreach>
+    </insert>
+
+    <insert id="batchInsertTaskActor" parameterType="java.util.List">
+        insert into wf_task_actor (task_Id,actor_Id,type,surrogate_id)
+        values
+        <foreach collection="taskActorVos" index="index" item="item" separator=",">
+            (#{item.taskId},#{item.actorId},#{item.type},#{item.surrogateId})
+        </foreach>
+    </insert>
+
+    <insert id="insertTaskActor" parameterType="com.weshareholdings.approval.vo.TaskActorVo">
+        insert into wf_task_actor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">
+                task_Id,
+            </if>
+            <if test="actorId != null">
+                actor_Id,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="surrogateId != null">
+                surrogate_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">
+                #{taskId,jdbcType=VARCHAR},
+            </if>
+            <if test="actorId != null">
+                #{actorId,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="surrogateId != null">
+                surrogateId,
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateSurrogate" parameterType="com.weshareholdings.approval.po.ProOpt">
+        update wf_surrogate
+        <set>
+            <if test="processName != null">
+                process_Name = #{processName,jdbcType=VARCHAR},
+            </if>
+            <if test="surrogate != null">
+                surrogate = #{surrogate,jdbcType=VARCHAR},
+            </if>
+            <if test="sdate != null">
+                sdate = #{sdate,jdbcType=VARCHAR},
+            </if>
+            <if test="edate != null">
+                edate = #{edate,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="taskId != null">
+                task_id = #{taskId,jdbcType=VARCHAR},
+            </if>
+            <if test="processId != null">
+                process_id = #{processId,jdbcType=VARCHAR},
+            </if>
+            state = 1,
+            odate = now()
+        </set>
+        where batch_id = #{batchId,jdbcType=INTEGER} and state != 0
+    </update>
+
+    <update id="deleteSurrogate" parameterType="java.lang.String">
+        update wf_surrogate
+        set state = 0
+        where batch_id = #{batchId,jdbcType=VARCHAR}
+    </update>
+
+
+    <resultMap id="taskActorMap" type="com.weshareholdings.approval.vo.TaskActorVo">
+        <result property="taskId" column="task_Id" jdbcType="VARCHAR"></result>
+        <result property="actorId" column="actor_Id" jdbcType="VARCHAR"></result>
+        <result property="type" column="type" jdbcType="VARCHAR"></result>
+        <result property="id" column="task_actor_id" jdbcType="VARCHAR"></result>
+        <result property="surrogateId" column="surrogate_id" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <select id="queryTaskActorByTaskIdAndUserName" resultMap="taskActorMap" parameterType="java.lang.String">
+        select
+          a.task_Id,a.actor_Id,a.type,a.task_actor_id,a.surrogate_id
+        from wf_task_actor a
+        left join wf_task b on a.task_Id= b.id
+        left join wf_order c on b.order_Id= c.id
+        left join wf_surrogate d on a.surrogate_id= d.id
+        <where>
+            1=1
+            <if test="type != null">
+                and a.type = #{type}
+            </if>
+            <if test="surrogate != null">
+                and a.actor_Id = #{surrogate}
+            </if>
+            <if test="orderId != null">
+                and b.order_Id = #{orderId}
+            </if>
+            <if test="surrogateId != null">
+                and a.surrogate_id = #{surrogateId}
+            </if>
+            <if test="batchId != null">
+                and d.batch_id = #{batchId}
+            </if>
+            <if test="processId != null">
+                and c.process_Id = #{processId}
+            </if>
+        </where>
+    </select>
+
+    <select id="querySurrogateByBatchId" resultMap="surrogateMap" parameterType="java.lang.String">
+        select
+          id,process_Name,operator,surrogate,order_id,batch_id AS batchId,sdate,edate,odate
+        from wf_surrogate
+        where
+           batch_id = #{batchId}
+        and state = 1
+    </select>
+
+    <delete id="deleteTaskActor" parameterType="java.lang.String">
+        delete from wf_task_actor
+        where task_actor_id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <select id="querySurrogateByUser" resultMap="surrogateMap" parameterType="java.lang.String">
+        select
+          id,operator,surrogate,order_id,batch_id AS batchId,process_Name,process_id,odate,sdate,edate
+        from wf_surrogate
+        <where>
+            surrogate = #{operator}
+            and state = 1
+            <choose>
+                <when test="type !=null and type != ''">
+                    and DATE_FORMAT(sdate, '%Y-%m-%d %H:%i:%S') &lt;=  DATE_FORMAT(now(),'%Y-%m-%d %H:%i:%S')
+                    and DATE_FORMAT(edate, '%Y-%m-%d %H:%i:%S') &gt;=  DATE_FORMAT(now(),'%Y-%m-%d %H:%i:%S')
+                </when>
+                <otherwise>
+                    and DATE_FORMAT(edate, '%Y-%m-%d %H:%i:%S') &lt;  DATE_FORMAT(now(),'%Y-%m-%d %H:%i:%S')
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <select id="querySurrogateChangeOrderIdByUser" resultMap="surrogateMap" parameterType="java.lang.String">
+        select
+          distinct operator,surrogate,batch_id AS batchId,process_Name,process_id,odate,sdate,edate
+        from wf_surrogate
+        where
+            surrogate = #{operator}
+            and state = 1
+            and order_id is null
+            and DATE_FORMAT(sdate, '%Y-%m-%d %H:%i:%S') &lt;=  DATE_FORMAT(now(),'%Y-%m-%d %H:%i:%S')
+            and DATE_FORMAT(edate, '%Y-%m-%d %H:%i:%S') &gt;=  DATE_FORMAT(now(),'%Y-%m-%d %H:%i:%S')
+        union
+        select
+          distinct ws.operator,ws.surrogate,ws.batch_id AS batchId,ws.process_Name,ws.process_id,ws.odate,ws.sdate,ws.edate
+        from wf_surrogate ws
+        where
+            ws.surrogate = #{operator}
+            and ws.state = 1
+            and DATE_FORMAT(sdate, '%Y-%m-%d %H:%i:%S') &lt;=  DATE_FORMAT(now(),'%Y-%m-%d %H:%i:%S')
+            and DATE_FORMAT(edate, '%Y-%m-%d %H:%i:%S') &gt;=  DATE_FORMAT(now(),'%Y-%m-%d %H:%i:%S')
+            and not exists(
+                select 1
+                from wf_task t
+                left join wf_order o on t.order_id = o.id
+                left join wf_task_actor ta on ta.task_id=t.id
+                where ta.actor_Id =  #{operator}
+                and o.id = ws.order_id
+            )
+        union
+        select
+          distinct ws.operator,ws.surrogate,ws.batch_id AS batchId,ws.process_Name,ws.process_id,ws.odate,ws.sdate,ws.edate
+        from wf_surrogate ws
+        where
+            ws.surrogate = #{operator}
+            and ws.state = 1
+            and DATE_FORMAT(sdate, '%Y-%m-%d %H:%i:%S') &lt;=  DATE_FORMAT(now(),'%Y-%m-%d %H:%i:%S')
+            and DATE_FORMAT(edate, '%Y-%m-%d %H:%i:%S') &gt;=  DATE_FORMAT(now(),'%Y-%m-%d %H:%i:%S')
+            and exists(select 1
+                    from wf_task t
+                    left join wf_order o on t.order_id = o.id
+                    left join wf_task_actor ta on ta.task_id=t.id
+                    where ta.actor_Id =  #{operator}
+                    and o.id not in(
+                       select
+                          order_id
+                       from wf_surrogate
+                       where
+                            batch_id = ws.batch_id
+                    )
+                )
+    </select>
+
+    <delete id="deleteSurrogateEnd" parameterType="java.lang.String">
+        update wf_surrogate
+        set state = 2
+        where batch_id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+
+    <resultMap id="orderMap" type="com.weshareholdings.approval.vo.OrderSurrogate">
+        <result property="orderId" column="id" jdbcType="VARCHAR"></result>
+        <result property="orderName" column="orderName" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <select id="querySurrogateOrderList" resultMap="orderMap" parameterType="java.lang.String">
+        select
+          wo.id,pro.pro_name as orderName
+        from wf_order wo
+        left join pro_info pro on wo.id = pro.order_id
+        left join  wf_task a on wo.id = a.order_Id
+        left join wf_task_actor b on a.id = b.task_Id
+        <where>
+            b.actor_Id = #{operator}
+            and type = '00'
+        </where>
+    </select>
+
+    <select id="queryAllSurrogateByProcessId" parameterType="java.lang.String" resultType="java.lang.String">
+        select distinct o.id
+        from wf_task t
+        left join wf_order o on t.order_id = o.id
+        left join wf_task_actor ta on ta.task_id=t.id
+        where
+            ta.actor_Id =  #{operator}
+			and o.process_id = #{processId}
+    </select>
+
+    <select id="queryProcessIdByBatchId" resultType="java.lang.String" parameterType="java.lang.String">
+        select
+          b.process_id
+        from wf_surrogate a
+        left join wf_order b on a.order_id = b.id
+        where
+           a.batch_id = #{batchId}
+        limit 1
+    </select>
+</mapper>

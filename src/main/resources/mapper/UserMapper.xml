@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weshareholdings.approval.repository.UserMapper">
+
+    <resultMap id="userMap" type="com.weshareholdings.approval.po.User">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="age" column="age" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="enabled" column="enabled" jdbcType="VARCHAR"/>
+        <result property="fullName" column="fullName" jdbcType="VARCHAR"/>
+        <result property="sex" column="sex" jdbcType="VARCHAR"/>
+        <result property="userName" column="userName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="getUserByUserName" resultMap="userMap" parameterType="java.lang.String">
+        select * from sec_user
+        <where>
+            enabled = '1'
+            <if test="userName != null">
+                and username = #{userName}
+            </if>
+        </where>
+
+    </select>
+    <select id="getUserLikeUserName" resultMap="userMap" parameterType="java.lang.String">
+        select distinct
+           a.id
+          ,a.address
+          ,a.age
+          ,a.email
+          ,a.enabled
+          ,a.fullName
+          ,a.sex
+          ,a.userName
+        from
+          sec_user a
+        left join ws_sys_user_org b on a.id = b.user_id
+        left join ws_sys_org c on b.org_id = c.id
+        <where>
+            enabled = '1'
+            <!--and userName != #{operator}-->
+            <if test="userName != null">
+                and a.userName like concat('%',#{userName},'%')
+            </if>
+            <if test="fullName != null">
+                and a.fullName like concat('%',#{fullName},'%')
+            </if>
+            <if test="proType != null">
+                and c.code = #{proType}
+            </if>
+        </where>
+
+    </select>
+
+    <insert id="insertUser">
+        INSERT INTO sec_user (`address`, `age`, `email`, `enabled`, `fullname`, `password`,
+        `plainPassword`, `salt`, `sex`, `type`, `username`, `org`)
+        VALUES (NULL, NULL, #{email}, '1', #{fullName},
+        NULL, NULL, NULL, NULL, NULL, #{userName}, NULL);
+    </insert>
+
+    <!-- 根据流程id查询需要发送邮件提醒的用户的邮箱 -->
+    <select id="queryUserEmailByOrderId" resultType="java.lang.String" parameterType="java.util.Map">
+        select
+        c.email
+        from
+        wf_task a
+        left join wf_task_actor b on a.id = b.task_Id
+        left join sec_user c on b.actor_Id = c.username
+        where a.order_Id = #{orderId}
+        and  c.enabled = 1
+        <if test="parentTaskId != null">
+            and a.parent_Task_Id != #{parentTaskId}
+        </if>
+
+    </select>
+
+    <select id="queryTeamEmailByOrderId" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT  DISTINCT sec_user.email FROM sec_user
+            LEFT JOIN pro_team ON pro_team.user_id = sec_user.id
+            LEFT JOIN pro_info ON pro_info.id = pro_team.pro_id
+        WHERE 1=1
+            <if test="orderId != null">
+              and  pro_info.order_id = #{orderId}
+            </if>
+    </select>
+</mapper>

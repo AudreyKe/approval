@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weshareholdings.approval.repository.TaskMapper">
+    <resultMap id="HistoryTaskMap" type="org.snaker.engine.entity.HistoryTask">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="orderId" jdbcType="VARCHAR" property="orderid"/>
+        <result column="taskId" jdbcType="VARCHAR" property="taskid"/>
+        <result column="result" jdbcType="VARCHAR" property="result"/>
+        <result column="resultState" jdbcType="VARCHAR" property="resultstate"/>
+        <result column="resultType" jdbcType="VARCHAR" property="resulttype"/>
+        <result column="operator" jdbcType="VARCHAR" property="operator"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
+    </resultMap>
+
+    <select id="queryTaskActor" parameterType="java.lang.String" resultType="java.lang.String">
+        select wta.task_Id
+        from wf_task_actor wta
+        left join wf_task wt on wt.id=wta.task_Id
+        where wt.order_Id = #{orderId}
+    </select>
+    <!-- 批量删除任务与执行者关联信息 -->
+    <delete id="batchDeleteTaskActor" parameterType="java.lang.String">
+        delete from wf_task_actor where task_Id in
+        <foreach item="item" collection="taskIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="selectAll" parameterType="org.snaker.engine.entity.HistoryTask" resultMap="HistoryTaskMap">
+        select * from wf_hist_task
+        <where>
+            1=1
+            <if test="orderId != null">
+                and order_Id = #{orderId}
+            </if>
+            <if test="taskState != null">
+                and task_State = #{taskState}
+            </if>
+            <if test="taskName != null">
+                and task_Name = #{taskName}
+            </if>
+        </where>
+    </select>
+
+
+    <resultMap id="TaskMap" type="org.snaker.engine.entity.Task">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="display_Name" jdbcType="VARCHAR" property="displayName"/>
+        <result column="task_Name" jdbcType="VARCHAR" property="taskName"/>
+        <result column="order_Id" jdbcType="VARCHAR" property="orderId"/>
+    </resultMap>
+
+    <select id="selectTaskById" parameterType="java.lang.String" resultMap="TaskMap">
+        select
+          id,display_Name,task_Name,order_Id
+        from wf_task
+        where id = #{taskId}
+    </select>
+
+    <select id="selectTaskByOrderIdAndDisplayName" parameterType="java.lang.String" resultMap="TaskMap">
+        select
+          id,display_Name,task_Name,order_Id
+        from wf_task
+        where
+           order_Id = #{orderId}
+           and display_Name = #{displayName}
+    </select>
+
+    <select id="closeDeleteForeignMatch" parameterType="java.lang.String">
+      SET FOREIGN_KEY_CHECKS = 0
+    </select>
+
+    <select id="openDeleteForeignMatch" parameterType="java.lang.String">
+      SET FOREIGN_KEY_CHECKS = 1
+    </select>
+
+    <delete id="deleteTaskHisById" parameterType="java.lang.String">
+        delete from
+          wf_hist_task
+        where id = #{taskId}
+    </delete>
+
+    <delete id="deleteTaskActorHisByTaskId" parameterType="java.lang.String">
+        delete from
+          wf_hist_task_actor
+        where task_Id = #{taskId}
+    </delete>
+
+    <select id="selectTaskActorEmail" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT DISTINCT sec_user.email FROM wf_hist_task
+            LEFT JOIN wf_hist_task_actor ON wf_hist_task_actor.task_Id = wf_hist_task.id
+            LEFT JOIN pro_info ON pro_info.order_id = wf_hist_task.order_Id
+        left join sec_user on sec_user.username = wf_hist_task_actor.actor_Id
+        WHERE
+        1=1
+            <if test="proId != null">
+              and  pro_info.id = #{proId}
+            </if>
+        <if test="taskName != null">
+            and wf_hist_task.task_Name = #{taskName}
+        </if>
+    </select>
+
+    <resultMap id="taskActorMap" type="com.weshareholdings.approval.vo.TaskActorVo">
+        <result property="taskId" column="task_Id" jdbcType="VARCHAR"></result>
+        <result property="actorId" column="actor_Id" jdbcType="VARCHAR"></result>
+        <result property="type" column="type" jdbcType="VARCHAR"></result>
+        <result property="id" column="task_actor_id" jdbcType="VARCHAR"></result>
+        <result property="surrogateId" column="surrogate_id" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <select id="queryTaskActorByTaskId" resultMap="taskActorMap" parameterType="java.lang.String">
+        select
+          a.task_Id,a.actor_Id,a.type,a.task_actor_id,a.surrogate_id
+        from wf_task_actor a
+        where
+            a.task_Id = #{taskId}
+    </select>
+
+
+    <select id="queryTaskActorHisByTaskId" resultType="java.lang.String" parameterType="java.lang.String">
+        select
+          a.task_actor_his_id
+        from wf_hist_task_actor a
+        where
+            a.task_Id = #{taskId}
+        and a.actor_Id = #{actorId}
+        limit 1
+    </select>
+
+    <update id="updateTaskActorHisById"  parameterType="java.lang.String">
+        update
+          wf_hist_task_actor
+        set
+          type = #{type}
+          ,surrogate_id = #{surrogateId}
+        where
+            task_actor_his_id = #{taskActorHisId}
+    </update>
+</mapper>
