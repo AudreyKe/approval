@@ -16,7 +16,7 @@
     "better-scroll": "^1.13.0",
     "countup": "^1.8.2",
     "mint-ui": "^2.2.13",
-    "moment": "^2.22.2",
+    "moment": "^2.29.2",
     "normalize.css": "^8.0.0",
     "postcss-pxtorem": "^4.0.1",
     "vue": "^2.5.16",
